@@ -352,15 +352,7 @@ export function Activity() {
                         <span className="text-sm text-gray-900">{course.averageGrade}%</span>
                       </td>
                       <td className="py-4 px-4">
-                        <span
-                          className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
-                            course.atRisk === 0
-                              ? 'bg-green-100 text-green-700'
-                              : course.atRisk <= 3
-                              ? 'bg-yellow-100 text-yellow-700'
-                              : 'bg-red-100 text-red-700'
-                          }`}
-                        >
+                        <span className="text-sm font-medium text-orange-600">
                           {course.atRisk}
                         </span>
                       </td>
