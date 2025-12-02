@@ -1,5 +1,6 @@
-import { GraduationCap, User, BarChart3, BookOpen, FileText, Mail, CalendarDays, ExternalLink } from 'lucide-react';
+import { User, BarChart3, BookOpen, FileText, Mail, CalendarDays, ExternalLink } from 'lucide-react';
 import type { ViewType } from '../App';
+import douraLogo from '../assets/doura-logo.png';
 
 interface SidebarProps {
   currentView: ViewType;
@@ -25,11 +26,13 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
       {/* Logo area */}
       <div className="p-6 pb-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-            <GraduationCap className="w-6 h-6 text-white" />
-          </div>
+          <img
+            src={douraLogo}
+            alt="Doura National College"
+            className="w-12 h-12 object-contain"
+          />
           <div>
-            <h1>UniLearn</h1>
+            <h1 className="text-brand-green-dark font-semibold text-lg">Doura National College</h1>
             <p className="text-sm text-gray-500">Learning Portal</p>
           </div>
         </div>
