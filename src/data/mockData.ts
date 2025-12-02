@@ -206,6 +206,9 @@ export interface CourseStats {
   activeStudents: number;
   totalStudents: number;
   submissionRate: number;
+  attendance: number;
+  attendanceTrend: number[];
+  atRisk: number;
 }
 
 // Activity feed items (last 24-48 hours)
@@ -342,6 +345,9 @@ export const mockCourseStats: CourseStats[] = [
     activeStudents: 42,
     totalStudents: 45,
     submissionRate: 82,
+    attendance: 82,
+    attendanceTrend: [78, 80, 85, 82],
+    atRisk: 3,
   },
   {
     courseId: '5',
@@ -352,6 +358,9 @@ export const mockCourseStats: CourseStats[] = [
     activeStudents: 38,
     totalStudents: 41,
     submissionRate: 76,
+    attendance: 88,
+    attendanceTrend: [85, 86, 89, 88],
+    atRisk: 1,
   },
   {
     courseId: '3',
@@ -362,6 +371,9 @@ export const mockCourseStats: CourseStats[] = [
     activeStudents: 31,
     totalStudents: 32,
     submissionRate: 94,
+    attendance: 94,
+    attendanceTrend: [91, 93, 95, 94],
+    atRisk: 0,
   },
   {
     courseId: '4',
@@ -372,6 +384,9 @@ export const mockCourseStats: CourseStats[] = [
     activeStudents: 48,
     totalStudents: 50,
     submissionRate: 90,
+    attendance: 86,
+    attendanceTrend: [84, 85, 88, 86],
+    atRisk: 5,
   },
   {
     courseId: '2',
@@ -382,6 +397,9 @@ export const mockCourseStats: CourseStats[] = [
     activeStudents: 35,
     totalStudents: 38,
     submissionRate: 71,
+    attendance: 75,
+    attendanceTrend: [72, 74, 76, 75],
+    atRisk: 3,
   },
 ];
 

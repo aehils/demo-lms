@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { AlertCircle, Clock, Users, FileText, MessageCircle, CheckCircle, Megaphone, ClipboardCheck } from 'lucide-react';
+import { AlertCircle, Clock, Users, FileText, MessageCircle, CheckCircle, Megaphone, ClipboardCheck, TrendingUp, AlertTriangle } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import {
   mockActivityFeed,
@@ -56,6 +56,21 @@ export function Activity() {
     }
     return mockActivityFeed.filter((item) => item.type === activityFilter);
   }, [activityFilter]);
+
+  // Calculate aggregate stats
+  const aggregateStats = useMemo(() => {
+    const totalStudents = mockCourseStats.reduce((sum, course) => sum + course.activeStudents, 0);
+    const avgAttendance = Math.round(
+      mockCourseStats.reduce((sum, course) => sum + course.attendance, 0) / mockCourseStats.length
+    );
+    const avgGrade = Math.round(
+      mockCourseStats.reduce((sum, course) => sum + course.averageGrade * course.totalStudents, 0) /
+        mockCourseStats.reduce((sum, course) => sum + course.totalStudents, 0)
+    );
+    const atRiskCount = mockCourseStats.reduce((sum, course) => sum + course.atRisk, 0);
+
+    return { totalStudents, avgAttendance, avgGrade, atRiskCount };
+  }, []);
 
   // Get icon for activity type
   const getActivityIcon = (type: ActivityType) => {
@@ -248,72 +263,131 @@ export function Activity() {
         </div>
 
         {/* Course Overview Section */}
-        <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Course Overview</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Course</th>
-                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Pending</th>
-                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Avg. Grade</th>
-                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Active Students</th>
-                  <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Submission Rate</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {mockCourseStats.map((course) => (
-                  <tr key={course.courseId} className="hover:bg-gray-50 transition-colors">
-                    <td className="py-3 px-4">
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">{course.courseName}</p>
-                        <p className="text-xs text-gray-500">{course.courseCode}</p>
-                      </div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
-                          course.pendingReviews > 5
-                            ? 'bg-red-100 text-red-700'
-                            : course.pendingReviews > 0
-                            ? 'bg-yellow-100 text-yellow-700'
-                            : 'bg-green-100 text-green-700'
-                        }`}
-                      >
-                        {course.pendingReviews}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className="text-sm text-gray-900">{course.averageGrade}%</span>
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className="text-sm text-gray-900">
-                        {course.activeStudents}/{course.totalStudents}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4">
-                      <div className="flex items-center gap-2">
-                        <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-[100px]">
-                          <div
-                            className={`h-2 rounded-full ${
-                              course.submissionRate >= 85
-                                ? 'bg-green-500'
-                                : course.submissionRate >= 70
-                                ? 'bg-yellow-500'
-                                : 'bg-red-500'
-                            }`}
-                            style={{ width: `${course.submissionRate}%` }}
-                          />
-                        </div>
-                        <span className="text-sm text-gray-600 whitespace-nowrap">
-                          {course.submissionRate}%
-                        </span>
-                      </div>
-                    </td>
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold text-gray-900">Course Overview</h2>
+
+          {/* Aggregate Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <Users className="w-5 h-5 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{aggregateStats.totalStudents}</p>
+                  <p className="text-sm text-gray-600">Total Students</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{aggregateStats.avgAttendance}%</p>
+                  <p className="text-sm text-gray-600">Avg Attendance</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-purple-100 rounded-lg">
+                  <TrendingUp className="w-5 h-5 text-purple-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{aggregateStats.avgGrade}%</p>
+                  <p className="text-sm text-gray-600">Avg Grade</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-orange-100 rounded-lg">
+                  <AlertTriangle className="w-5 h-5 text-orange-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{aggregateStats.atRiskCount}</p>
+                  <p className="text-sm text-gray-600">At-Risk Students</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Course Table */}
+          <div className="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Course</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Students</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Attendance</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Avg. Grade</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">At-Risk</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Submission Rate</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {mockCourseStats.map((course) => (
+                    <tr key={course.courseId} className="hover:bg-gray-50 transition-colors cursor-pointer">
+                      <td className="py-4 px-4">
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">{course.courseName}</p>
+                          <p className="text-xs text-gray-500">{course.courseCode}</p>
+                        </div>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className="text-sm text-gray-900">
+                          {course.activeStudents}/{course.totalStudents}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className="text-sm text-gray-900">{course.attendance}%</span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className="text-sm text-gray-900">{course.averageGrade}%</span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span
+                          className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
+                            course.atRisk === 0
+                              ? 'bg-green-100 text-green-700'
+                              : course.atRisk <= 3
+                              ? 'bg-yellow-100 text-yellow-700'
+                              : 'bg-red-100 text-red-700'
+                          }`}
+                        >
+                          {course.atRisk}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-[100px]">
+                            <div
+                              className={`h-2 rounded-full ${
+                                course.submissionRate >= 85
+                                  ? 'bg-green-500'
+                                  : course.submissionRate >= 70
+                                  ? 'bg-yellow-500'
+                                  : 'bg-red-500'
+                              }`}
+                              style={{ width: `${course.submissionRate}%` }}
+                            />
+                          </div>
+                          <span className="text-sm text-gray-600 whitespace-nowrap">
+                            {course.submissionRate}%
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
