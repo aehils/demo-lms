@@ -45,18 +45,6 @@ export function Activity({ userRole }: ActivityProps) {
     }
   };
 
-  // Show instructor view only
-  if (userRole !== 'instructor') {
-    return (
-      <div className="p-8">
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
-          <p className="text-blue-800">Activity dashboard is available in Instructor view only.</p>
-          <p className="text-sm text-blue-600 mt-2">Switch to Instructor mode to access this feature.</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="p-8">
       <div className="max-w-7xl mx-auto space-y-6">
