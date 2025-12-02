@@ -1,4 +1,4 @@
-import { GraduationCap, User, BarChart3, BookOpen, FileText, Mail, CalendarDays, ExternalLink, Settings, Moon, HelpCircle, LogOut, ChevronDown } from 'lucide-react';
+import { GraduationCap, User, BarChart3, BookOpen, FileText, Mail, CalendarDays, ExternalLink, Settings, Moon, HelpCircle, LogOut, ChevronUp } from 'lucide-react';
 import type { ViewType } from '../App';
 import {
   DropdownMenu,
@@ -97,10 +97,15 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
                   <div className="font-medium">Dr. Okafor</div>
                   <div className="text-xs text-gray-500">Lecturer</div>
                 </div>
-                <ChevronDown className="w-4 h-4 flex-shrink-0" />
+                <ChevronUp className="w-4 h-4 flex-shrink-0" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuContent
+              side="top"
+              align="center"
+              sideOffset={0}
+              className="w-[var(--radix-dropdown-menu-trigger-width)] bg-white"
+            >
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
