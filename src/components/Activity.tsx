@@ -85,18 +85,15 @@ export function Activity() {
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <button className="flex items-center gap-3 px-4 py-3 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition-colors group">
-              <ClipboardCheck className="w-5 h-5 text-blue-600" />
-              <span className="text-sm font-medium text-blue-900">Mark Assignments</span>
-            </button>
-            <button className="flex items-center gap-3 px-4 py-3 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg transition-colors group">
-              <Megaphone className="w-5 h-5 text-purple-600" />
-              <span className="text-sm font-medium text-purple-900">Post Announcement</span>
-            </button>
-          </div>
+        <div className="flex justify-end gap-3">
+          <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-sm">
+            <ClipboardCheck className="w-4 h-4" />
+            <span className="text-sm font-medium">Mark Assignments</span>
+          </button>
+          <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-sm">
+            <Megaphone className="w-4 h-4" />
+            <span className="text-sm font-medium">Post Announcement</span>
+          </button>
         </div>
 
         {/* Time Sensitive Section */}
