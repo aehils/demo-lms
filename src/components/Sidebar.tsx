@@ -13,7 +13,7 @@ type MenuItem =
 export function Sidebar({ currentView, onViewChange }: SidebarProps) {
   const menuItems: MenuItem[] = [
     { id: 'activity', label: 'Activity', icon: BarChart3 },
-    { id: 'courses', label: 'My Modules', icon: BookOpen },
+    { id: 'courses', label: 'My Classes', icon: BookOpen },
     { id: 'assignments', label: 'Assignments', icon: FileText },
     { type: 'separator' },
     { id: 'email', label: 'Email', icon: Mail, isExternal: true },

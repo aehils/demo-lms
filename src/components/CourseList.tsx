@@ -26,8 +26,8 @@ export function CourseList({ userRole, onCourseSelect }: CourseListProps) {
             onClick={() => onCourseSelect(course.id)}
             className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all text-left"
           >
-            <div className={`h-40 ${course.color} flex items-center justify-center`}>
-              <BookOpen className="w-16 h-16 text-white" />
+            <div className={`h-32 ${course.color} flex items-center justify-center`}>
+              <BookOpen className="w-14 h-14 text-white" />
             </div>
             <div className="p-6">
               <div className="flex items-start justify-between mb-2">
@@ -36,10 +36,6 @@ export function CourseList({ userRole, onCourseSelect }: CourseListProps) {
                   <p className="text-sm text-gray-600 mt-1">{course.code}</p>
                 </div>
               </div>
-              
-              <p className="text-sm text-gray-700 mt-3 line-clamp-2">
-                {course.description}
-              </p>
 
               <div className="mt-4 flex items-center gap-4 text-sm text-gray-600">
                 <div className="flex items-center gap-1">
@@ -53,22 +49,18 @@ export function CourseList({ userRole, onCourseSelect }: CourseListProps) {
               </div>
 
               {userRole === 'student' && (
-                <>
-                  <div className="mt-4 flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Progress</span>
-                    <span className="text-blue-600">{course.progress}%</span>
-                  </div>
-                  <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-blue-600 h-2 rounded-full transition-all"
-                      style={{ width: `${course.progress}%` }}
-                    />
-                  </div>
-                </>
+                <div className="mt-4 flex items-center justify-between text-sm">
+                  <span className="text-gray-600">Progress</span>
+                  <span className="text-blue-600">{course.progress}%</span>
+                </div>
               )}
 
               <div className="mt-4 pt-4 border-t border-gray-100">
-                <p className="text-xs text-gray-600">Instructor: {course.instructor}</p>
+                <p className="text-xs text-gray-600">
+                  {course.coInstructors && course.coInstructors.length > 0
+                    ? `You and ${course.coInstructors.join(', ')}`
+                    : 'You'}
+                </p>
               </div>
             </div>
           </button>
