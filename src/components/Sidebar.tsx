@@ -32,8 +32,7 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
             className="w-12 h-12 object-contain"
           />
           <div>
-            <h1 className="text-brand-green-dark font-semibold text-lg">Doura National College</h1>
-            <p className="text-sm text-gray-500">Learning Portal</p>
+            <h1 className="text-brand-green font-semibold text-base">Doura National College</h1>
           </div>
         </div>
       </div>
