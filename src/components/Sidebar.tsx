@@ -1,4 +1,4 @@
-import { Home, BookOpen, FileText, BarChart3, CalendarDays, Settings, GraduationCap } from 'lucide-react';
+import { Home, BookOpen, FileText, BarChart3, CalendarDays, Settings, GraduationCap, Activity } from 'lucide-react';
 import type { UserRole, ViewType } from '../App';
 
 interface SidebarProps {
@@ -11,6 +11,7 @@ interface SidebarProps {
 export function Sidebar({ currentView, onViewChange, userRole, onRoleChange }: SidebarProps) {
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: Home },
+    { id: 'activity', label: 'Activity', icon: Activity },
     { id: 'courses', label: 'Courses', icon: BookOpen },
     { id: 'assignments', label: 'Assignments', icon: FileText },
     { id: 'grades', label: 'Grades', icon: BarChart3 },

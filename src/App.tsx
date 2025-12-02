@@ -6,9 +6,10 @@ import { CourseView } from './components/CourseView';
 import { Assignments } from './components/Assignments';
 import { Grades } from './components/Grades';
 import { Calendar } from './components/Calendar';
+import { Activity } from './components/Activity';
 
 export type UserRole = 'student' | 'instructor';
-export type ViewType = 'dashboard' | 'courses' | 'course' | 'assignments' | 'grades' | 'calendar';
+export type ViewType = 'dashboard' | 'courses' | 'course' | 'assignments' | 'grades' | 'calendar' | 'activity';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<ViewType>('dashboard');
@@ -34,6 +35,8 @@ export default function App() {
         return <Grades userRole={userRole} />;
       case 'calendar':
         return <Calendar userRole={userRole} />;
+      case 'activity':
+        return <Activity userRole={userRole} />;
       default:
         return <Dashboard userRole={userRole} onCourseSelect={handleCourseSelect} />;
     }
