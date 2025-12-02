@@ -6,14 +6,16 @@ import { CourseView } from './components/CourseView';
 import { Assignments } from './components/Assignments';
 import { Grades } from './components/Grades';
 import { Calendar } from './components/Calendar';
+import { Email } from './components/Email';
+import { Timetable } from './components/Timetable';
 
 export type UserRole = 'student' | 'instructor';
-export type ViewType = 'dashboard' | 'courses' | 'course' | 'assignments' | 'grades' | 'calendar';
+export type ViewType = 'activity' | 'courses' | 'course' | 'assignments' | 'grades' | 'calendar' | 'email' | 'timetable';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<ViewType>('dashboard');
+  const [currentView, setCurrentView] = useState<ViewType>('activity');
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
-  const [userRole, setUserRole] = useState<UserRole>('student');
+  const [userRole] = useState<UserRole>('student');
 
   const handleCourseSelect = (courseId: string) => {
     setSelectedCourseId(courseId);
@@ -22,7 +24,7 @@ export default function App() {
 
   const renderView = () => {
     switch (currentView) {
-      case 'dashboard':
+      case 'activity':
         return <Dashboard userRole={userRole} onCourseSelect={handleCourseSelect} />;
       case 'courses':
         return <CourseList userRole={userRole} onCourseSelect={handleCourseSelect} />;
@@ -34,6 +36,10 @@ export default function App() {
         return <Grades userRole={userRole} />;
       case 'calendar':
         return <Calendar userRole={userRole} />;
+      case 'email':
+        return <Email />;
+      case 'timetable':
+        return <Timetable />;
       default:
         return <Dashboard userRole={userRole} onCourseSelect={handleCourseSelect} />;
     }
@@ -44,8 +50,6 @@ export default function App() {
       <Sidebar
         currentView={currentView}
         onViewChange={setCurrentView}
-        userRole={userRole}
-        onRoleChange={setUserRole}
       />
       <main className="flex-1 overflow-y-auto">
         {renderView()}
