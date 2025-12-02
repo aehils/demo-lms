@@ -1,8 +1,6 @@
-import { User, BarChart3, BookOpen, FileText, Mail, CalendarDays, ExternalLink } from 'lucide-react';
+import { User, BarChart3, BookOpen, FileText, Mail, CalendarDays, ExternalLink, Settings, Moon, HelpCircle, LogOut, ChevronUp } from 'lucide-react';
 import type { ViewType } from '../App';
 import douraLogo from '../assets/doura-logo.png';
-import { GraduationCap, User, BarChart3, BookOpen, FileText, Mail, CalendarDays, ExternalLink, Settings, Moon, HelpCircle, LogOut, ChevronUp } from 'lucide-react';
-import type { ViewType } from '../App';
 import {
   DropdownMenu,
   DropdownMenuContent,

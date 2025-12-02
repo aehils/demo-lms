@@ -5,10 +5,11 @@ import { mockCourses, mockModules } from '../data/mockData';
 
 interface CourseViewProps {
   courseId: string | null;
+  yearGroup: string | null;
   userRole: UserRole;
 }
 
-export function CourseView({ courseId, userRole }: CourseViewProps) {
+export function CourseView({ courseId, yearGroup, userRole }: CourseViewProps) {
   const [activeTab, setActiveTab] = useState<'modules' | 'assignments' | 'people'>('modules');
   const course = mockCourses.find(c => c.id === courseId);
 
@@ -31,7 +32,14 @@ export function CourseView({ courseId, userRole }: CourseViewProps) {
           <div className="flex items-start justify-between">
             <div>
               <h1>{course.name}</h1>
-              <p className="text-gray-600 mt-2">{course.code} • {course.semester}</p>
+              <div className="flex items-center gap-3 mt-2">
+                <p className="text-gray-600">{course.code} • {course.semester}</p>
+                {yearGroup && userRole === 'instructor' && (
+                  <span className="px-3 py-1 text-sm font-medium bg-brand-green text-white rounded-full">
+                    {yearGroup}
+                  </span>
+                )}
+              </div>
               <p className="text-gray-700 mt-3">{course.description}</p>
             </div>
             {userRole === 'student' && (

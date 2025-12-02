@@ -10,6 +10,7 @@ export const mockCourses = [
     students: 45,
     progress: 75,
     color: 'bg-blue-600',
+    yearGroups: ['Y2023', 'Y2024'],
   },
   {
     id: '2',
@@ -22,6 +23,7 @@ export const mockCourses = [
     students: 38,
     progress: 60,
     color: 'bg-purple-600',
+    yearGroups: ['Y2023', 'Y2024'],
   },
   {
     id: '3',
@@ -34,6 +36,7 @@ export const mockCourses = [
     students: 32,
     progress: 85,
     color: 'bg-green-600',
+    yearGroups: ['Y2023', 'Y2024'],
   },
   {
     id: '4',
@@ -46,6 +49,7 @@ export const mockCourses = [
     students: 50,
     progress: 90,
     color: 'bg-orange-600',
+    yearGroups: ['Y2023', 'Y2024'],
   },
   {
     id: '5',
@@ -58,6 +62,7 @@ export const mockCourses = [
     students: 41,
     progress: 70,
     color: 'bg-indigo-600',
+    yearGroups: ['Y2023', 'Y2024'],
   },
 ];
 
