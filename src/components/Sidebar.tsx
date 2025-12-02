@@ -1,3 +1,6 @@
+import { User, BarChart3, BookOpen, FileText, Mail, CalendarDays, ExternalLink } from 'lucide-react';
+import type { ViewType } from '../App';
+import douraLogo from '../assets/doura-logo.png';
 import { GraduationCap, User, BarChart3, BookOpen, FileText, Mail, CalendarDays, ExternalLink, Settings, Moon, HelpCircle, LogOut, ChevronUp } from 'lucide-react';
 import type { ViewType } from '../App';
 import {
@@ -33,12 +36,13 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
       {/* Logo area */}
       <div className="p-6 pb-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-            <GraduationCap className="w-6 h-6 text-white" />
-          </div>
+          <img
+            src={douraLogo}
+            alt="Doura National College"
+            className="w-12 h-12 object-contain"
+          />
           <div>
-            <h1>UniLearn</h1>
-            <p className="text-sm text-gray-500">Learning Portal</p>
+            <h1 className="text-brand-green font-semibold text-base">Doura National College</h1>
           </div>
         </div>
       </div>
@@ -66,7 +70,7 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
                       onClick={() => onViewChange(item.id)}
                       className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors text-sm ${
                         isActive
-                          ? 'bg-blue-50 text-blue-700 font-medium'
+                          ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green/30'
                           : 'text-gray-700 hover:bg-gray-50'
                       }`}
                     >

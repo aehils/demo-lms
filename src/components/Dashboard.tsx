@@ -112,7 +112,7 @@ export function Dashboard({ userRole, onCourseSelect }: DashboardProps) {
             <button
               key={course.id}
               onClick={() => onCourseSelect(course.id)}
-              className="text-left p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:shadow-md transition-all"
+              className="text-left p-4 border border-gray-200 rounded-lg hover:border-brand-green hover:shadow-md transition-all"
             >
               <div className={`w-full h-32 rounded-lg mb-3 ${course.color} flex items-center justify-center`}>
                 <BookOpen className="w-12 h-12 text-white" />
@@ -125,7 +125,7 @@ export function Dashboard({ userRole, onCourseSelect }: DashboardProps) {
               </div>
               <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
                 <div
-                  className="bg-blue-600 h-1.5 rounded-full"
+                  className="bg-brand-green h-1.5 rounded-full"
                   style={{ width: `${course.progress}%` }}
                 />
               </div>
