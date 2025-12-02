@@ -15,7 +15,7 @@ export type ViewType = 'activity' | 'courses' | 'course' | 'assignments' | 'grad
 export default function App() {
   const [currentView, setCurrentView] = useState<ViewType>('activity');
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
-  const [userRole] = useState<UserRole>('student');
+  const [userRole, setUserRole] = useState<UserRole>('instructor');
 
   const handleCourseSelect = (courseId: string) => {
     setSelectedCourseId(courseId);

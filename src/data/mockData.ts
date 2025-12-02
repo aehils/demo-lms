@@ -172,3 +172,234 @@ export const mockModules = [
   },
 ];
 
+export type ActivityType = 'submission' | 'late_submission' | 'comment' | 'access' | 'grade_posted';
+
+export interface ActivityItem {
+  id: string;
+  type: ActivityType;
+  studentName: string;
+  course: string;
+  courseId: string;
+  description: string;
+  timestamp: Date;
+  isLate?: boolean;
+}
+
+export interface AttentionItem {
+  id: string;
+  priority: 'high' | 'medium' | 'low';
+  type: 'grading' | 'late_submission' | 'inactive_students' | 'upcoming_deadline';
+  title: string;
+  description: string;
+  courseId: string;
+  courseName: string;
+  count?: number;
+  dueDate?: string;
+}
+
+export interface CourseStats {
+  courseId: string;
+  courseName: string;
+  courseCode: string;
+  pendingReviews: number;
+  averageGrade: number;
+  activeStudents: number;
+  totalStudents: number;
+  submissionRate: number;
+  attendance: number;
+  attendanceTrend: number[];
+  atRisk: number;
+}
+
+// Activity feed items (last 24-48 hours)
+export const mockActivityFeed: ActivityItem[] = [
+  {
+    id: 'a1',
+    type: 'submission',
+    studentName: 'Sarah Chen',
+    course: 'Introduction to Computer Science',
+    courseId: '1',
+    description: 'submitted "Binary Search Trees Implementation"',
+    timestamp: new Date(Date.now() - 2 * 60 * 1000), // 2 minutes ago
+  },
+  {
+    id: 'a2',
+    type: 'comment',
+    studentName: 'Michael Park',
+    course: 'Data Structures & Algorithms',
+    courseId: '5',
+    description: 'commented on "Sorting Algorithms Comparison"',
+    timestamp: new Date(Date.now() - 15 * 60 * 1000), // 15 minutes ago
+  },
+  {
+    id: 'a3',
+    type: 'late_submission',
+    studentName: 'Alex Johnson',
+    course: 'Introduction to Computer Science',
+    courseId: '1',
+    description: 'submitted "Binary Search Trees Implementation" (Late)',
+    timestamp: new Date(Date.now() - 60 * 60 * 1000), // 1 hour ago
+    isLate: true,
+  },
+  {
+    id: 'a4',
+    type: 'access',
+    studentName: '15 students',
+    course: 'Data Structures & Algorithms',
+    courseId: '5',
+    description: 'accessed "Module 3: Sorting and Searching"',
+    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), // 2 hours ago
+  },
+  {
+    id: 'a5',
+    type: 'submission',
+    studentName: 'Emma Wilson',
+    course: 'Data Structures & Algorithms',
+    courseId: '5',
+    description: 'submitted "Sorting Algorithms Comparison"',
+    timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000), // 3 hours ago
+  },
+  {
+    id: 'a6',
+    type: 'grade_posted',
+    studentName: 'System',
+    course: 'Introduction to Computer Science',
+    courseId: '1',
+    description: 'You posted grades for "Algorithm Analysis Quiz"',
+    timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000), // 4 hours ago
+  },
+  {
+    id: 'a7',
+    type: 'submission',
+    studentName: 'David Kim',
+    course: 'Data Structures & Algorithms',
+    courseId: '5',
+    description: 'submitted "Hash Table Implementation"',
+    timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000), // 5 hours ago
+  },
+  {
+    id: 'a8',
+    type: 'access',
+    studentName: '23 students',
+    course: 'Introduction to Computer Science',
+    courseId: '1',
+    description: 'accessed "Final Exam Study Guide"',
+    timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000), // 6 hours ago
+  },
+];
+
+// Items requiring teacher's attention
+export const mockAttentionItems: AttentionItem[] = [
+  {
+    id: 'att1',
+    priority: 'high',
+    type: 'grading',
+    title: 'Assignments to grade',
+    description: '8 submissions waiting for review',
+    courseId: '1',
+    courseName: 'Introduction to Computer Science',
+    count: 8,
+    dueDate: 'Today',
+  },
+  {
+    id: 'att2',
+    priority: 'high',
+    type: 'upcoming_deadline',
+    title: 'Assignment deadline approaching',
+    description: '3 students haven\'t submitted yet',
+    courseId: '5',
+    courseName: 'Data Structures & Algorithms',
+    count: 3,
+    dueDate: 'Tomorrow',
+  },
+  {
+    id: 'att3',
+    priority: 'medium',
+    type: 'inactive_students',
+    title: 'Inactive students',
+    description: '2 students haven\'t accessed course in 7 days',
+    courseId: '5',
+    courseName: 'Data Structures & Algorithms',
+    count: 2,
+  },
+  {
+    id: 'att4',
+    priority: 'medium',
+    type: 'late_submission',
+    title: 'Late submissions received',
+    description: '4 late submissions need review',
+    courseId: '1',
+    courseName: 'Introduction to Computer Science',
+    count: 4,
+  },
+];
+
+// Course overview statistics
+export const mockCourseStats: CourseStats[] = [
+  {
+    courseId: '1',
+    courseName: 'Introduction to Computer Science',
+    courseCode: 'CS 101',
+    pendingReviews: 8,
+    averageGrade: 87,
+    activeStudents: 42,
+    totalStudents: 45,
+    submissionRate: 82,
+    attendance: 82,
+    attendanceTrend: [78, 80, 85, 82],
+    atRisk: 3,
+  },
+  {
+    courseId: '5',
+    courseName: 'Data Structures & Algorithms',
+    courseCode: 'CS 250',
+    pendingReviews: 3,
+    averageGrade: 82,
+    activeStudents: 38,
+    totalStudents: 41,
+    submissionRate: 76,
+    attendance: 88,
+    attendanceTrend: [85, 86, 89, 88],
+    atRisk: 1,
+  },
+  {
+    courseId: '3',
+    courseName: 'Modern Physics',
+    courseCode: 'PHYS 301',
+    pendingReviews: 1,
+    averageGrade: 91,
+    activeStudents: 31,
+    totalStudents: 32,
+    submissionRate: 94,
+    attendance: 94,
+    attendanceTrend: [91, 93, 95, 94],
+    atRisk: 0,
+  },
+  {
+    courseId: '4',
+    courseName: 'World Literature',
+    courseCode: 'LIT 150',
+    pendingReviews: 5,
+    averageGrade: 88,
+    activeStudents: 48,
+    totalStudents: 50,
+    submissionRate: 90,
+    attendance: 86,
+    attendanceTrend: [84, 85, 88, 86],
+    atRisk: 5,
+  },
+  {
+    courseId: '2',
+    courseName: 'Calculus II',
+    courseCode: 'MATH 202',
+    pendingReviews: 2,
+    averageGrade: 79,
+    activeStudents: 35,
+    totalStudents: 38,
+    submissionRate: 71,
+    attendance: 75,
+    attendanceTrend: [72, 74, 76, 75],
+    atRisk: 3,
+  },
+];
+
