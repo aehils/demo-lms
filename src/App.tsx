@@ -14,7 +14,7 @@ export type ViewType = 'dashboard' | 'courses' | 'course' | 'assignments' | 'gra
 export default function App() {
   const [currentView, setCurrentView] = useState<ViewType>('dashboard');
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
-  const [userRole, setUserRole] = useState<UserRole>('student');
+  const [userRole, setUserRole] = useState<UserRole>('instructor');
 
   const handleCourseSelect = (courseId: string) => {
     setSelectedCourseId(courseId);
