@@ -7,16 +7,46 @@ import {
   mockCourseStats,
   type ActivityType,
 } from '../data/mockData';
-import type { UserRole } from '../App';
-
-interface ActivityProps {
-  userRole: UserRole;
-}
 
 type ActivityFilter = 'all' | 'submission' | 'late_submission' | 'access' | 'comment';
 
-export function Activity({ userRole }: ActivityProps) {
+export function Activity() {
   const [activityFilter, setActivityFilter] = useState<ActivityFilter>('all');
+  const [attentionPage, setAttentionPage] = useState(1);
+  const itemsPerPage = 4;
+
+  // Pagination for attention items
+  const totalAttentionPages = Math.ceil(mockAttentionItems.length / itemsPerPage);
+  const paginatedAttentionItems = mockAttentionItems.slice(
+    (attentionPage - 1) * itemsPerPage,
+    attentionPage * itemsPerPage
+  );
+
+  // Calculate time remaining text
+  const getTimeRemaining = (dueDate: string | undefined) => {
+    if (!dueDate) return null;
+
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(23, 59, 59, 999);
+
+    const dayAfterTomorrow = new Date(now);
+    dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+    dayAfterTomorrow.setHours(23, 59, 59, 999);
+
+    if (dueDate.toLowerCase() === 'today') {
+      const endOfDay = new Date(now);
+      endOfDay.setHours(23, 59, 59, 999);
+      const hoursLeft = Math.ceil((endOfDay.getTime() - now.getTime()) / (1000 * 60 * 60));
+      return `Due in ${hoursLeft}h`;
+    } else if (dueDate.toLowerCase() === 'tomorrow') {
+      return 'Due in 1 day';
+    } else {
+      // For other cases, could add more logic
+      return `Due ${dueDate}`;
+    }
+  };
 
   // Filter activity feed based on selected filter
   const filteredActivities = useMemo(() => {
@@ -54,42 +84,75 @@ export function Activity({ userRole }: ActivityProps) {
           <p className="text-gray-600 mt-1">Monitor student activity and course performance</p>
         </div>
 
-        {/* Needs Attention Section */}
-        <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <AlertCircle className="w-5 h-5 text-orange-600" />
-            <h2 className="text-xl font-semibold text-gray-900">Needs Attention</h2>
-          </div>
-          <div className="space-y-3">
+        {/* Time Sensitive Section */}
+        <div className="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
+          <div className="p-6 pb-4">
+            <div className="flex items-center gap-2 mb-4">
+              <Clock className="w-5 h-5 text-orange-600" />
+              <h2 className="text-xl font-semibold text-gray-900">Time Sensitive</h2>
+            </div>
             {mockAttentionItems.length === 0 ? (
-              <p className="text-gray-500 text-sm">All caught up! No urgent items.</p>
+              <div className="py-8">
+                <p className="text-gray-500 text-sm text-center">No items.</p>
+              </div>
             ) : (
-              mockAttentionItems.map((item) => (
-                <div
-                  key={item.id}
-                  className={`flex items-start gap-3 p-4 rounded-lg border ${
-                    item.priority === 'high'
-                      ? 'bg-red-50 border-red-200'
-                      : 'bg-yellow-50 border-yellow-200'
-                  }`}
-                >
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
+              <div className="space-y-3 min-h-[280px]">
+                {paginatedAttentionItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className={`flex items-start justify-between gap-4 p-4 rounded-lg border ${
+                      item.priority === 'high'
+                        ? 'bg-red-50 border-red-200'
+                        : 'bg-yellow-50 border-yellow-200'
+                    }`}
+                  >
+                    <div className="flex-1 min-w-0">
                       <h3 className="font-medium text-gray-900">{item.courseName}</h3>
-                      {item.dueDate && (
-                        <span className="text-xs px-2 py-1 bg-white border border-gray-300 rounded-full text-gray-700">
-                          {item.dueDate}
-                        </span>
-                      )}
+                      <p className="text-sm text-gray-700 mt-1">{item.description}</p>
                     </div>
-                    <p className="text-sm text-gray-700 mt-1">
-                      <span className="font-medium">{item.description}</span>
-                    </p>
+                    {item.dueDate && (
+                      <div className="text-sm text-gray-600 whitespace-nowrap font-medium">
+                        {getTimeRemaining(item.dueDate)}
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))
+                ))}
+              </div>
             )}
           </div>
+
+          {/* Pagination Footer */}
+          {mockAttentionItems.length > 0 && (
+            <div className="border-t border-gray-200 bg-gray-50 px-6 py-3 flex items-center justify-between">
+              <div className="text-sm text-gray-600">
+                Showing page {attentionPage} of {totalAttentionPages}
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setAttentionPage((p) => Math.max(1, p - 1))}
+                  disabled={attentionPage === 1}
+                  className={`px-3 py-1 text-sm rounded border ${
+                    attentionPage === 1
+                      ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                  }`}
+                >
+                  Previous
+                </button>
+                <button
+                  onClick={() => setAttentionPage((p) => Math.min(totalAttentionPages, p + 1))}
+                  disabled={attentionPage === totalAttentionPages}
+                  className={`px-3 py-1 text-sm rounded border ${
+                    attentionPage === totalAttentionPages
+                      ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                  }`}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Recent Activity Section */}

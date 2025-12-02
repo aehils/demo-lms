@@ -36,7 +36,7 @@ export default function App() {
       case 'calendar':
         return <Calendar userRole={userRole} />;
       case 'activity':
-        return <Activity userRole={userRole} />;
+        return <Activity />;
       default:
         return <Dashboard userRole={userRole} onCourseSelect={handleCourseSelect} />;
     }
