@@ -1,5 +1,13 @@
-import { GraduationCap, User, BarChart3, BookOpen, FileText, Mail, CalendarDays, ExternalLink } from 'lucide-react';
+import { GraduationCap, User, BarChart3, BookOpen, FileText, Mail, CalendarDays, ExternalLink, Settings, Moon, HelpCircle, LogOut, ChevronDown } from 'lucide-react';
 import type { ViewType } from '../App';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu';
 
 interface SidebarProps {
   currentView: ViewType;
@@ -78,16 +86,42 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
         </div>
       </nav>
 
-      {/* Role indicator and Profile */}
+      {/* Profile with role indicator inside */}
       <div className="p-4">
-        <div className="px-3 pb-2">
-          <p className="text-sm text-gray-500">Lecturer</p>
-        </div>
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-2">
-          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm">
-            <User className="w-4 h-4" />
-            <span>Dr. Okafor</span>
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm">
+                <User className="w-5 h-5 flex-shrink-0" />
+                <div className="flex-1 text-left">
+                  <div className="font-medium">Dr. Okafor</div>
+                  <div className="text-xs text-gray-500">Lecturer</div>
+                </div>
+                <ChevronDown className="w-4 h-4 flex-shrink-0" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Settings className="mr-2 h-4 w-4" />
+                <span>Settings</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Moon className="mr-2 h-4 w-4" />
+                <span>Dark Mode</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <HelpCircle className="mr-2 h-4 w-4" />
+                <span>Help & Support</span>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem variant="destructive">
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Sign Out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </div>
