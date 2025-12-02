@@ -15,7 +15,7 @@ export type ViewType = 'activity' | 'courses' | 'course' | 'assignments' | 'grad
 export default function App() {
   const [currentView, setCurrentView] = useState<ViewType>('activity');
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
-  const [userRole, setUserRole] = useState<UserRole>('student');
+  const [userRole] = useState<UserRole>('student');
 
   const handleCourseSelect = (courseId: string) => {
     setSelectedCourseId(courseId);
@@ -51,7 +51,6 @@ export default function App() {
         currentView={currentView}
         onViewChange={setCurrentView}
         userRole={userRole}
-        onRoleChange={setUserRole}
       />
       <main className="flex-1 overflow-y-auto">
         {renderView()}
