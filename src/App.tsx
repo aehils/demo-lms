@@ -1,0 +1,56 @@
+import { useState } from 'react';
+import { Sidebar } from './components/Sidebar';
+import { Dashboard } from './components/Dashboard';
+import { CourseList } from './components/CourseList';
+import { CourseView } from './components/CourseView';
+import { Assignments } from './components/Assignments';
+import { Grades } from './components/Grades';
+import { Calendar } from './components/Calendar';
+
+export type UserRole = 'student' | 'instructor';
+export type ViewType = 'dashboard' | 'courses' | 'course' | 'assignments' | 'grades' | 'calendar';
+
+export default function App() {
+  const [currentView, setCurrentView] = useState<ViewType>('dashboard');
+  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
+  const [userRole, setUserRole] = useState<UserRole>('student');
+
+  const handleCourseSelect = (courseId: string) => {
+    setSelectedCourseId(courseId);
+    setCurrentView('course');
+  };
+
+  const renderView = () => {
+    switch (currentView) {
+      case 'dashboard':
+        return <Dashboard userRole={userRole} onCourseSelect={handleCourseSelect} />;
+      case 'courses':
+        return <CourseList userRole={userRole} onCourseSelect={handleCourseSelect} />;
+      case 'course':
+        return <CourseView courseId={selectedCourseId} userRole={userRole} />;
+      case 'assignments':
+        return <Assignments userRole={userRole} />;
+      case 'grades':
+        return <Grades userRole={userRole} />;
+      case 'calendar':
+        return <Calendar userRole={userRole} />;
+      default:
+        return <Dashboard userRole={userRole} onCourseSelect={handleCourseSelect} />;
+    }
+  };
+
+  return (
+    <div className="flex h-screen bg-gray-50">
+      <Sidebar
+        currentView={currentView}
+        onViewChange={setCurrentView}
+        userRole={userRole}
+        onRoleChange={setUserRole}
+      />
+      <main className="flex-1 overflow-y-auto">
+        {renderView()}
+      </main>
+    </div>
+  );
+}
+
