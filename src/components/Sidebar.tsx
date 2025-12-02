@@ -1,4 +1,4 @@
-import { GraduationCap, Settings } from 'lucide-react';
+import { GraduationCap, Settings, BarChart3, BookOpen, FileText, Mail, CalendarDays } from 'lucide-react';
 import type { UserRole, ViewType } from '../App';
 
 interface SidebarProps {
@@ -8,17 +8,17 @@ interface SidebarProps {
 }
 
 type MenuItem =
-  | { id: ViewType; label: string; emoji: string }
+  | { id: ViewType; label: string; icon: typeof BarChart3 }
   | { type: 'separator' };
 
 export function Sidebar({ currentView, onViewChange, userRole }: SidebarProps) {
   const menuItems: MenuItem[] = [
-    { id: 'activity', label: 'Activity', emoji: '📊' },
-    { id: 'courses', label: 'My Modules', emoji: '📚' },
-    { id: 'assignments', label: 'Assignments', emoji: '📝' },
+    { id: 'activity', label: 'Activity', icon: BarChart3 },
+    { id: 'courses', label: 'My Modules', icon: BookOpen },
+    { id: 'assignments', label: 'Assignments', icon: FileText },
     { type: 'separator' },
-    { id: 'email', label: 'Email', emoji: '✉️' },
-    { id: 'timetable', label: 'Timetable', emoji: '📅' },
+    { id: 'email', label: 'Email', icon: Mail },
+    { id: 'timetable', label: 'Timetable', icon: CalendarDays },
   ];
 
   return (
@@ -51,19 +51,20 @@ export function Sidebar({ currentView, onViewChange, userRole }: SidebarProps) {
 
               if ('id' in item) {
                 const isActive = currentView === item.id;
+                const Icon = item.icon;
 
                 return (
                   <li key={item.id}>
                     <button
                       onClick={() => onViewChange(item.id)}
-                      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm ${
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors text-sm ${
                         isActive
                           ? 'bg-blue-50 text-blue-700 font-medium'
                           : 'text-gray-700 hover:bg-gray-50'
                       }`}
                     >
-                      <span className="text-lg">{item.emoji}</span>
                       <span>{item.label}</span>
+                      <Icon className="w-4 h-4" />
                     </button>
                   </li>
                 );
@@ -78,11 +79,11 @@ export function Sidebar({ currentView, onViewChange, userRole }: SidebarProps) {
       {/* Role indicator and Settings */}
       <div className="p-4">
         <div className="px-3 pb-2">
-          <p className="text-xs text-gray-500 capitalize">{userRole}</p>
+          <p className="text-sm text-gray-500 capitalize">{userRole}</p>
         </div>
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-2">
-          <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm">
-            <Settings className="w-5 h-5" />
+          <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm">
+            <Settings className="w-4 h-4" />
             <span>Settings</span>
           </button>
         </div>
