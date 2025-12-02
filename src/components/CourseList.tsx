@@ -57,7 +57,9 @@ export function CourseList({ userRole, onCourseSelect }: CourseListProps) {
 
               <div className="mt-4 pt-4 border-t border-gray-100">
                 <p className="text-xs text-gray-600">
-                  with {course.coInstructors?.join(', ')}
+                  {course.coInstructors && course.coInstructors.length > 0
+                    ? `You and ${course.coInstructors.join(', ')}`
+                    : 'You'}
                 </p>
               </div>
             </div>
