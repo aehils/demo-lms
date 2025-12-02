@@ -1,4 +1,4 @@
-import { GraduationCap, User, BarChart3, BookOpen, FileText, Mail, CalendarDays } from 'lucide-react';
+import { GraduationCap, User, BarChart3, BookOpen, FileText, Mail, CalendarDays, ExternalLink } from 'lucide-react';
 import type { ViewType } from '../App';
 
 interface SidebarProps {
@@ -7,7 +7,7 @@ interface SidebarProps {
 }
 
 type MenuItem =
-  | { id: ViewType; label: string; icon: typeof BarChart3 }
+  | { id: ViewType; label: string; icon: typeof BarChart3; isExternal?: boolean }
   | { type: 'separator' };
 
 export function Sidebar({ currentView, onViewChange }: SidebarProps) {
@@ -16,7 +16,7 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
     { id: 'courses', label: 'My Modules', icon: BookOpen },
     { id: 'assignments', label: 'Assignments', icon: FileText },
     { type: 'separator' },
-    { id: 'email', label: 'Email', icon: Mail },
+    { id: 'email', label: 'Email', icon: Mail, isExternal: true },
     { id: 'timetable', label: 'Timetable', icon: CalendarDays },
   ];
 
@@ -63,7 +63,10 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
                       }`}
                     >
                       <span>{item.label}</span>
-                      <Icon className="w-4 h-4" />
+                      <div className="flex items-center gap-2">
+                        {item.isExternal && <ExternalLink className="w-3 h-3" />}
+                        <Icon className="w-4 h-4" />
+                      </div>
                     </button>
                   </li>
                 );
