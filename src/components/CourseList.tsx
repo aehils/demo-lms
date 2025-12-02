@@ -47,17 +47,19 @@ export function CourseList({ userRole, onCourseSelect }: CourseListProps) {
 
                 {/* Year Groups */}
                 {userRole === 'instructor' && course.yearGroups && course.yearGroups.length > 0 && (
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm text-gray-600">Year Groups:</span>
-                    {course.yearGroups.map((yearGroup) => (
-                      <button
-                        key={yearGroup}
-                        onClick={() => onCourseSelect(course.id, yearGroup)}
-                        className="px-3 py-1 text-sm font-medium border-2 border-gray-300 rounded-full hover:border-brand-green hover:bg-brand-green hover:text-white transition-all"
-                      >
-                        {yearGroup}
-                      </button>
-                    ))}
+                  <div>
+                    <span className="text-sm text-gray-600 block mb-2">Year Groups:</span>
+                    <div className="flex flex-wrap gap-2">
+                      {course.yearGroups.map((yearGroup) => (
+                        <button
+                          key={yearGroup}
+                          onClick={() => onCourseSelect(course.id, yearGroup)}
+                          className="px-3 py-1 text-sm font-medium border-2 border-gray-300 rounded hover:border-brand-green hover:bg-brand-green hover:text-white transition-all"
+                        >
+                          {yearGroup}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
