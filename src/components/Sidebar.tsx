@@ -1,17 +1,16 @@
-import { GraduationCap, Settings, BarChart3, BookOpen, FileText, Mail, CalendarDays } from 'lucide-react';
-import type { UserRole, ViewType } from '../App';
+import { GraduationCap, User, BarChart3, BookOpen, FileText, Mail, CalendarDays } from 'lucide-react';
+import type { ViewType } from '../App';
 
 interface SidebarProps {
   currentView: ViewType;
   onViewChange: (view: ViewType) => void;
-  userRole: UserRole;
 }
 
 type MenuItem =
   | { id: ViewType; label: string; icon: typeof BarChart3 }
   | { type: 'separator' };
 
-export function Sidebar({ currentView, onViewChange, userRole }: SidebarProps) {
+export function Sidebar({ currentView, onViewChange }: SidebarProps) {
   const menuItems: MenuItem[] = [
     { id: 'activity', label: 'Activity', icon: BarChart3 },
     { id: 'courses', label: 'My Modules', icon: BookOpen },
@@ -76,15 +75,15 @@ export function Sidebar({ currentView, onViewChange, userRole }: SidebarProps) {
         </div>
       </nav>
 
-      {/* Role indicator and Settings */}
+      {/* Role indicator and Profile */}
       <div className="p-4">
         <div className="px-3 pb-2">
-          <p className="text-sm text-gray-500 capitalize">{userRole}</p>
+          <p className="text-sm text-gray-500">Lecturer</p>
         </div>
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-2">
           <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors text-sm">
-            <Settings className="w-4 h-4" />
-            <span>Settings</span>
+            <User className="w-4 h-4" />
+            <span>Dr. Okafor</span>
           </button>
         </div>
       </div>

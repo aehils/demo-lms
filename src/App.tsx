@@ -50,7 +50,6 @@ export default function App() {
       <Sidebar
         currentView={currentView}
         onViewChange={setCurrentView}
-        userRole={userRole}
       />
       <main className="flex-1 overflow-y-auto">
         {renderView()}
