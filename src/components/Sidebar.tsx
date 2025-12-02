@@ -1,6 +1,6 @@
 import { User, BarChart3, BookOpen, FileText, Mail, CalendarDays, ExternalLink, Settings, Moon, HelpCircle, LogOut, ChevronUp } from 'lucide-react';
 import type { ViewType } from '../App';
-import douraLogo from '../assets/doura-logo.png';
+import douraLogo from '../assets/doura-logo-full.png';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,16 +33,11 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
     <div className="w-64 bg-gray-50 flex flex-col">
       {/* Logo area */}
       <div className="p-6 pb-4">
-        <div className="flex items-center gap-3">
-          <img
-            src={douraLogo}
-            alt="Doura National College"
-            className="w-12 h-12 object-contain"
-          />
-          <div>
-            <h1 className="text-brand-green font-semibold text-base">Doura National College</h1>
-          </div>
-        </div>
+        <img
+          src={douraLogo}
+          alt="Doura National College"
+          className="w-full h-auto object-contain"
+        />
       </div>
 
       {/* Navigation card */}
