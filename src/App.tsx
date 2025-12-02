@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Sidebar } from './components/Sidebar';
+import { Activity } from './components/Activity';
 import { Dashboard } from './components/Dashboard';
 import { CourseList } from './components/CourseList';
 import { CourseView } from './components/CourseView';
@@ -25,7 +26,7 @@ export default function App() {
   const renderView = () => {
     switch (currentView) {
       case 'activity':
-        return <Dashboard userRole={userRole} onCourseSelect={handleCourseSelect} />;
+        return <Activity />;
       case 'courses':
         return <CourseList userRole={userRole} onCourseSelect={handleCourseSelect} />;
       case 'course':
@@ -41,7 +42,7 @@ export default function App() {
       case 'timetable':
         return <Timetable />;
       default:
-        return <Dashboard userRole={userRole} onCourseSelect={handleCourseSelect} />;
+        return <Activity />;
     }
   };
 
