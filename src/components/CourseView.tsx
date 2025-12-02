@@ -37,7 +37,7 @@ export function CourseView({ courseId, userRole }: CourseViewProps) {
             {userRole === 'student' && (
               <div className="text-right">
                 <p className="text-sm text-gray-600">Your Progress</p>
-                <p className="text-blue-600 mt-1">{course.progress}%</p>
+                <p className="text-brand-green-dark font-semibold mt-1">{course.progress}%</p>
               </div>
             )}
           </div>
@@ -61,7 +61,7 @@ export function CourseView({ courseId, userRole }: CourseViewProps) {
           onClick={() => setActiveTab('modules')}
           className={`px-4 py-2 transition-colors ${
             activeTab === 'modules'
-              ? 'border-b-2 border-blue-600 text-blue-600'
+              ? 'border-b-2 border-brand-green text-brand-green-dark font-medium'
               : 'text-gray-600 hover:text-gray-900'
           }`}
         >
@@ -71,7 +71,7 @@ export function CourseView({ courseId, userRole }: CourseViewProps) {
           onClick={() => setActiveTab('assignments')}
           className={`px-4 py-2 transition-colors ${
             activeTab === 'assignments'
-              ? 'border-b-2 border-blue-600 text-blue-600'
+              ? 'border-b-2 border-brand-green text-brand-green-dark font-medium'
               : 'text-gray-600 hover:text-gray-900'
           }`}
         >
@@ -81,7 +81,7 @@ export function CourseView({ courseId, userRole }: CourseViewProps) {
           onClick={() => setActiveTab('people')}
           className={`px-4 py-2 transition-colors ${
             activeTab === 'people'
-              ? 'border-b-2 border-blue-600 text-blue-600'
+              ? 'border-b-2 border-brand-green text-brand-green-dark font-medium'
               : 'text-gray-600 hover:text-gray-900'
           }`}
         >

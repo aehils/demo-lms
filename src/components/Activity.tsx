@@ -101,11 +101,11 @@ export function Activity() {
 
         {/* Quick Actions */}
         <div className="flex justify-end gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-sm">
+          <button className="flex items-center gap-2 px-4 py-2 bg-brand-green hover:bg-brand-green-light text-white rounded-lg transition-colors shadow-sm">
             <ClipboardCheck className="w-4 h-4" />
             <span className="text-sm font-medium">View Submissions</span>
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors shadow-sm">
+          <button className="flex items-center gap-2 px-4 py-2 bg-brand-green hover:bg-brand-green-light text-white rounded-lg transition-colors shadow-sm">
             <Megaphone className="w-4 h-4" />
             <span className="text-sm font-medium">Post Announcement</span>
           </button>
@@ -191,7 +191,7 @@ export function Activity() {
                 onClick={() => setActivityFilter('all')}
                 className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
                   activityFilter === 'all'
-                    ? 'bg-blue-100 text-blue-700 font-medium'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -201,7 +201,7 @@ export function Activity() {
                 onClick={() => setActivityFilter('submission')}
                 className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
                   activityFilter === 'submission'
-                    ? 'bg-blue-100 text-blue-700 font-medium'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -211,7 +211,7 @@ export function Activity() {
                 onClick={() => setActivityFilter('access')}
                 className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
                   activityFilter === 'access'
-                    ? 'bg-blue-100 text-blue-700 font-medium'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -221,7 +221,7 @@ export function Activity() {
                 onClick={() => setActivityFilter('late_submission')}
                 className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
                   activityFilter === 'late_submission'
-                    ? 'bg-blue-100 text-blue-700 font-medium'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -256,7 +256,7 @@ export function Activity() {
           </div>
 
           {filteredActivities.length > 10 && (
-            <button className="w-full mt-4 py-2 text-sm text-blue-600 hover:text-blue-700 font-medium">
+            <button className="w-full mt-4 py-2 text-sm text-brand-green hover:text-brand-green-light font-medium">
               Show more
             </button>
           )}

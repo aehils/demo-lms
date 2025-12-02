@@ -51,7 +51,7 @@ export function CourseList({ userRole, onCourseSelect }: CourseListProps) {
               {userRole === 'student' && (
                 <div className="mt-4 flex items-center justify-between text-sm">
                   <span className="text-gray-600">Progress</span>
-                  <span className="text-blue-600">{course.progress}%</span>
+                  <span className="text-brand-green-dark font-semibold">{course.progress}%</span>
                 </div>
               )}
 

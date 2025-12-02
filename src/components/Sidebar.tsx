@@ -60,7 +60,7 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
                       onClick={() => onViewChange(item.id)}
                       className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors text-sm ${
                         isActive
-                          ? 'bg-blue-50 text-blue-700 font-medium'
+                          ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green/30'
                           : 'text-gray-700 hover:bg-gray-50'
                       }`}
                     >

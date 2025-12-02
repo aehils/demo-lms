@@ -34,7 +34,7 @@ export function Assignments({ userRole }: AssignmentsProps) {
             onClick={() => setFilter(f as any)}
             className={`px-4 py-2 rounded-lg text-sm transition-colors ${
               filter === f
-                ? 'bg-blue-600 text-white'
+                ? 'bg-brand-green text-white hover:bg-brand-green-light'
                 : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
             }`}
           >
@@ -51,10 +51,10 @@ export function Assignments({ userRole }: AssignmentsProps) {
                         assignment.status === 'submitted' ? Upload :
                         CheckCircle2;
             const statusColor = assignment.status === 'pending' ? 'text-orange-600' :
-                               assignment.status === 'submitted' ? 'text-blue-600' :
+                               assignment.status === 'submitted' ? 'text-brand-gold-dark' :
                                'text-green-600';
             const bgColor = assignment.status === 'pending' ? 'bg-orange-50' :
-                           assignment.status === 'submitted' ? 'bg-blue-50' :
+                           assignment.status === 'submitted' ? 'bg-brand-gold/10' :
                            'bg-green-50';
 
             return (
@@ -63,7 +63,7 @@ export function Assignments({ userRole }: AssignmentsProps) {
                 onClick={() => setSelectedAssignment(assignment.id)}
                 className={`w-full bg-white rounded-xl border-2 p-6 text-left transition-all ${
                   selectedAssignment === assignment.id
-                    ? 'border-blue-500 shadow-md'
+                    ? 'border-brand-green shadow-md'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
@@ -138,7 +138,7 @@ export function Assignments({ userRole }: AssignmentsProps) {
                             <p className="text-sm text-gray-600 mb-3">
                               Drag and drop your file here or click to browse
                             </p>
-                            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            <button className="px-4 py-2 bg-brand-green text-white rounded-lg hover:bg-brand-green-light transition-colors">
                               Choose File
                             </button>
                           </div>
@@ -147,9 +147,9 @@ export function Assignments({ userRole }: AssignmentsProps) {
 
                       {assignment.status === 'submitted' && (
                         <div className="pt-4 border-t border-gray-200">
-                          <div className="flex items-center gap-2 text-blue-600 mb-2">
+                          <div className="flex items-center gap-2 text-brand-gold-dark mb-2">
                             <CheckCircle2 className="w-5 h-5" />
-                            <span className="text-sm">Submitted</span>
+                            <span className="text-sm font-medium">Submitted</span>
                           </div>
                           <p className="text-sm text-gray-600">
                             Your submission is being reviewed by the instructor.
