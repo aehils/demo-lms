@@ -61,17 +61,17 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
                   <li key={item.id}>
                     <button
                       onClick={() => onViewChange(item.id)}
-                      className={`w-full flex items-center ${item.isExternal ? 'gap-2' : 'justify-between'} px-3 py-2 rounded-lg transition-colors text-sm ${
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors text-sm ${
                         isActive
                           ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green/30'
                           : 'text-gray-700 hover:bg-gray-50'
                       }`}
                     >
-                      <span>{item.label}</span>
                       <div className="flex items-center gap-2">
+                        <span>{item.label}</span>
                         {item.isExternal && <ExternalLink className="w-3 h-3" />}
-                        <Icon className="w-4 h-4" />
                       </div>
+                      <Icon className="w-4 h-4" />
                     </button>
                   </li>
                 );
