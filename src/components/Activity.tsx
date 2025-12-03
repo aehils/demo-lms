@@ -267,23 +267,21 @@ export function Activity() {
               </table>
             </div>
             {sortedCourses.length > 3 && (
-              <div className="border-t border-gray-200 bg-gray-50 px-6 py-3 flex justify-center">
-                {!showAllCourses ? (
-                  <button
-                    onClick={() => setShowAllCourses(true)}
-                    className="px-4 py-2 text-sm text-brand-green hover:text-brand-green-light font-medium"
-                  >
-                    View More
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => setShowAllCourses(false)}
-                    className="px-3 py-1 text-xs text-gray-500 hover:text-gray-700 transition-colors"
-                  >
-                    Show Less
-                  </button>
-                )}
-              </div>
+              !showAllCourses ? (
+                <button
+                  onClick={() => setShowAllCourses(true)}
+                  className="w-full border-t border-gray-200 bg-gray-50 hover:bg-gray-100 px-6 py-3 text-sm text-brand-green hover:text-brand-green-light font-medium transition-colors cursor-pointer"
+                >
+                  View More
+                </button>
+              ) : (
+                <button
+                  onClick={() => setShowAllCourses(false)}
+                  className="w-full border-t border-gray-200 bg-gray-50 hover:bg-gray-100 px-6 py-3 text-xs text-gray-500 hover:text-gray-700 transition-colors cursor-pointer"
+                >
+                  Show Less
+                </button>
+              )
             )}
           </div>
         </div>
