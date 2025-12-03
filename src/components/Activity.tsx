@@ -47,7 +47,15 @@ export function Activity() {
   const filteredActivities = useMemo(() => {
     if (activityFilter === 'all') {
       // Combine regular activities and time sensitive items for "All" filter
-      return [...mockAttentionItems, ...mockActivityFeed];
+      // Add synthetic timestamps to time sensitive items so they can be sorted
+      const timeSensitiveWithTimestamps = mockAttentionItems.map((item, index) => ({
+        ...item,
+        timestamp: new Date(Date.now() - (index * 30 * 60 * 1000)), // Stagger by 30 minutes
+      }));
+
+      // Combine and sort by timestamp
+      const combined = [...timeSensitiveWithTimestamps, ...mockActivityFeed];
+      return combined.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
     }
     if (activityFilter === 'time_sensitive') {
       // Return only attention items when time_sensitive filter is selected
