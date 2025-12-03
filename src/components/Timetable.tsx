@@ -253,10 +253,13 @@ export function Timetable() {
       {/* Today's Classes Section - Only show if viewing current week */}
       {isCurrentWeek && todaysClasses.length > 0 && (
         <div className="mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-3 h-3 bg-brand-green rounded-full animate-pulse" />
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-brand-green rounded-lg">
+              <div className="w-2.5 h-2.5 bg-white rounded-full animate-pulse" />
+              <span className="text-sm font-bold text-white">Today</span>
+            </div>
             <h2 className="text-2xl font-bold text-gray-900">
-              Today, {format(getCurrentDate(), 'EEEE d MMMM, yyyy')}
+              {format(getCurrentDate(), 'EEEE d MMMM, yyyy')}
             </h2>
           </div>
 
