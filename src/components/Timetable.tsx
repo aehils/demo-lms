@@ -232,37 +232,37 @@ export function Timetable() {
 
       {/* Today's Classes Section - Only show if viewing current week */}
       {isCurrentWeek && todaysClasses.length > 0 && (
-        <div className="mb-8 bg-gradient-to-r from-brand-green to-brand-green-light rounded-xl p-6 text-white">
+        <div className="mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-3 h-3 bg-white rounded-full animate-pulse" />
-            <h2 className="text-xl font-bold">Today's Classes • {format(getCurrentDate(), 'EEEE, MMM d')}</h2>
+            <div className="w-3 h-3 bg-brand-green rounded-full animate-pulse" />
+            <h2 className="text-2xl font-bold text-gray-900">
+              Today, {format(getCurrentDate(), 'EEEE d MMMM, yyyy')}
+            </h2>
           </div>
-
-          {nextClass && (
-            <div className="mb-4 p-3 bg-white/10 rounded-lg border-2 border-white/30">
-              <div className="flex items-center gap-2 mb-1">
-                <Clock className="w-4 h-4" />
-                <span className="text-sm font-semibold">Next: {getTimeUntil(nextClass.startTime)}</span>
-              </div>
-              <div className="text-lg font-bold">{nextClass.courseCode} • {nextClass.courseName}</div>
-            </div>
-          )}
 
           <div className="space-y-3">
             {todaysClasses.map((slot) => {
               const isNow = isClassHappening(slot);
               const isPast = isPastClass(slot);
+              const isNext = nextClass && slot.id === nextClass.id;
 
               return (
                 <div
                   key={slot.id}
-                  className={`bg-white rounded-lg p-4 transition-all ${
-                    isNow ? 'ring-4 ring-white/50 shadow-xl' : 'shadow-md'
+                  className={`rounded-lg p-4 transition-all ${
+                    isNext
+                      ? 'bg-white shadow-xl ring-2 ring-brand-green border-2 border-brand-green'
+                      : 'bg-gradient-to-r from-brand-green/10 to-brand-green-light/10 border border-brand-green/20'
                   } ${isPast ? 'opacity-60' : ''}`}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
+                        {isNext && !isNow && (
+                          <span className="px-2 py-0.5 bg-brand-green text-white text-xs font-bold rounded-full">
+                            NEXT • {getTimeUntil(slot.startTime)}
+                          </span>
+                        )}
                         {isNow && (
                           <span className="px-2 py-0.5 bg-red-500 text-white text-xs font-bold rounded-full animate-pulse">
                             LIVE NOW
@@ -273,19 +273,23 @@ export function Timetable() {
                             COMPLETED
                           </span>
                         )}
-                        <span className={`text-lg font-bold ${slot.color.replace('bg-', 'text-')}`}>
+                        <span className={`text-lg font-bold ${isNext ? slot.color.replace('bg-', 'text-') : 'text-gray-900'}`}>
                           {slot.courseCode}
                         </span>
                         {slot.yearGroup && (
-                          <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full">
+                          <span className={`text-xs px-2 py-0.5 rounded-full ${
+                            isNext ? 'bg-gray-100 text-gray-700' : 'bg-white/50 text-gray-700'
+                          }`}>
                             {slot.yearGroup}
                           </span>
                         )}
                       </div>
 
-                      <div className="text-sm text-gray-900 mb-2">{slot.courseName}</div>
+                      <div className={`text-sm mb-2 ${isNext ? 'text-gray-900' : 'text-gray-700'}`}>
+                        {slot.courseName}
+                      </div>
 
-                      <div className="flex items-center gap-4 text-sm text-gray-600">
+                      <div className={`flex items-center gap-4 text-sm ${isNext ? 'text-gray-600' : 'text-gray-600'}`}>
                         <div className="flex items-center gap-1">
                           <Clock className="w-4 h-4" />
                           <span>{formatTime(slot.startTime)} - {formatTime(slot.endTime)}</span>
@@ -303,24 +307,32 @@ export function Timetable() {
                       {/* Prep Status Indicators */}
                       <div className="flex items-center gap-2 mt-2">
                         {slot.materialsUploaded ? (
-                          <div className="flex items-center gap-1 text-green-600 text-xs">
+                          <div className={`flex items-center gap-1 text-xs ${
+                            isNext ? 'text-green-600' : 'text-gray-600'
+                          }`}>
                             <CheckCircle2 className="w-3 h-3" />
                             <span>Materials ready</span>
                           </div>
                         ) : (
-                          <div className="flex items-center gap-1 text-amber-600 text-xs">
+                          <div className={`flex items-center gap-1 text-xs ${
+                            isNext ? 'text-amber-600' : 'text-gray-600'
+                          }`}>
                             <Zap className="w-3 h-3" />
                             <span>No materials</span>
                           </div>
                         )}
                         {slot.hasUpcomingAssignment && (
-                          <div className="flex items-center gap-1 text-orange-600 text-xs">
+                          <div className={`flex items-center gap-1 text-xs ${
+                            isNext ? 'text-orange-600' : 'text-gray-600'
+                          }`}>
                             <AlertTriangle className="w-3 h-3" />
                             <span>Assignment due</span>
                           </div>
                         )}
                         {slot.newQuestions > 0 && (
-                          <div className="flex items-center gap-1 text-blue-600 text-xs">
+                          <div className={`flex items-center gap-1 text-xs ${
+                            isNext ? 'text-blue-600' : 'text-gray-600'
+                          }`}>
                             <MessageSquare className="w-3 h-3" />
                             <span>{slot.newQuestions} new questions</span>
                           </div>
@@ -332,11 +344,15 @@ export function Timetable() {
                     <div className="flex flex-col gap-2 ml-4">
                       {slot.type !== 'office_hours' && (
                         <>
-                          <button className="px-3 py-1.5 bg-brand-green text-white text-xs font-medium rounded hover:bg-brand-green-dark transition-colors flex items-center gap-1">
+                          <button className={`px-3 py-1.5 text-xs font-medium rounded hover:bg-brand-green-dark transition-colors flex items-center gap-1 ${
+                            isNext ? 'bg-brand-green text-white' : 'bg-white text-brand-green border border-brand-green'
+                          }`}>
                             <ClipboardCheck className="w-3 h-3" />
                             Take Attendance
                           </button>
-                          <button className="px-3 py-1.5 bg-white text-brand-green border border-brand-green text-xs font-medium rounded hover:bg-gray-50 transition-colors flex items-center gap-1">
+                          <button className={`px-3 py-1.5 text-xs font-medium rounded transition-colors flex items-center gap-1 ${
+                            isNext ? 'bg-white text-brand-green border border-brand-green hover:bg-gray-50' : 'bg-white text-brand-green border border-brand-green hover:bg-gray-50'
+                          }`}>
                             <Eye className="w-3 h-3" />
                             View Class
                           </button>
