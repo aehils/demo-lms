@@ -227,7 +227,7 @@ export function Timetable() {
           </button>
         </div>
 
-        <h1 className="text-4xl font-bold text-gray-900">Timetable</h1>
+        <h1 className="text-4xl font-bold text-gray-900 mr-8">Timetable</h1>
       </div>
 
       {/* Today's Classes Section - Only show if viewing current week */}
