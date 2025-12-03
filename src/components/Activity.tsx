@@ -295,7 +295,7 @@ export function Activity() {
         {/* Recent Activity Section */}
         <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-gray-900">Recent Activity</h2>
+            <h2 className="text-xl font-semibold text-gray-900">Recent</h2>
             <div className="flex gap-2">
               <button
                 onClick={() => setActivityFilter('all')}
@@ -407,12 +407,6 @@ export function Activity() {
               })
             )}
           </div>
-
-          {filteredActivities.length > 10 && (
-            <button className="w-full mt-4 py-2 text-sm text-brand-green hover:text-brand-green-light font-medium">
-              Show more
-            </button>
-          )}
         </div>
       </div>
     </div>
