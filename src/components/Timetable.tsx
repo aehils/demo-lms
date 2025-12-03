@@ -209,7 +209,11 @@ export function Timetable() {
                 <ChevronDown className="w-4 h-4 text-gray-500 group-hover:text-gray-700 transition-colors" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-64">
+            <DropdownMenuContent
+              align="start"
+              className="bg-white border-gray-200 shadow-lg"
+              style={{ width: 'var(--radix-dropdown-menu-trigger-width)' }}
+            >
               <DropdownMenuLabel>Fall 2024 Semester</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <div className="max-h-[300px] overflow-y-auto">
