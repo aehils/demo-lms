@@ -8,19 +8,14 @@ import {
   type ActivityType,
 } from '../data/mockData';
 
-type ActivityFilter = 'all' | 'submission' | 'late_submission' | 'access' | 'comment';
+type ActivityFilter = 'all' | 'time_sensitive' | 'submission' | 'late_submission' | 'access' | 'comment';
+
+type SortField = 'attendance' | 'averageGrade' | 'atRisk' | 'submissionRate';
 
 export function Activity() {
   const [activityFilter, setActivityFilter] = useState<ActivityFilter>('all');
-  const [attentionPage, setAttentionPage] = useState(1);
-  const itemsPerPage = 4;
-
-  // Pagination for attention items
-  const totalAttentionPages = Math.ceil(mockAttentionItems.length / itemsPerPage);
-  const paginatedAttentionItems = mockAttentionItems.slice(
-    (attentionPage - 1) * itemsPerPage,
-    attentionPage * itemsPerPage
-  );
+  const [showAllCourses, setShowAllCourses] = useState(false);
+  const [sortField, setSortField] = useState<SortField>('attendance');
 
   // Calculate time remaining text
   const getTimeRemaining = (dueDate: string | undefined) => {
@@ -50,7 +45,22 @@ export function Activity() {
 
   // Filter activity feed based on selected filter
   const filteredActivities = useMemo(() => {
-    if (activityFilter === 'all') return mockActivityFeed;
+    if (activityFilter === 'all') {
+      // Combine regular activities and time sensitive items for "All" filter
+      // Add synthetic timestamps to time sensitive items so they can be sorted
+      const timeSensitiveWithTimestamps = mockAttentionItems.map((item, index) => ({
+        ...item,
+        timestamp: new Date(Date.now() - (index * 30 * 60 * 1000)), // Stagger by 30 minutes
+      }));
+
+      // Combine and sort by timestamp
+      const combined = [...timeSensitiveWithTimestamps, ...mockActivityFeed];
+      return combined.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+    }
+    if (activityFilter === 'time_sensitive') {
+      // Return only attention items when time_sensitive filter is selected
+      return mockAttentionItems;
+    }
     if (activityFilter === 'comment') {
       return mockActivityFeed.filter((item) => item.type === 'comment');
     }
@@ -71,6 +81,13 @@ export function Activity() {
 
     return { totalStudents, avgAttendance, avgGrade, atRiskCount };
   }, []);
+
+  // Sort and filter courses
+  const sortedCourses = useMemo(() => {
+    return [...mockCourseStats].sort((a, b) => a[sortField] - b[sortField]);
+  }, [sortField]);
+
+  const displayedCourses = showAllCourses ? sortedCourses : sortedCourses.slice(0, 3);
 
   // Get icon for activity type
   const getActivityIcon = (type: ActivityType) => {
@@ -258,8 +275,6 @@ export function Activity() {
 
         {/* Course Overview Section */}
         <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-gray-900">Course Overview</h2>
-
           {/* Aggregate Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
@@ -317,16 +332,56 @@ export function Activity() {
               <table className="w-full">
                 <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Course</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Students</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Attendance</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Avg. Grade</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">At-Risk</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Submission Rate</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">My Classes</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Headcount</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
+                      <button
+                        onClick={() => setSortField('attendance')}
+                        className={`flex items-center gap-1 hover:text-brand-green transition-colors ${
+                          sortField === 'attendance' ? 'text-brand-green font-bold' : 'text-gray-700'
+                        }`}
+                      >
+                        Attendance
+                        <span className={sortField === 'attendance' ? 'opacity-100' : 'opacity-30'}>↑</span>
+                      </button>
+                    </th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
+                      <button
+                        onClick={() => setSortField('averageGrade')}
+                        className={`flex items-center gap-1 hover:text-brand-green transition-colors ${
+                          sortField === 'averageGrade' ? 'text-brand-green font-bold' : 'text-gray-700'
+                        }`}
+                      >
+                        Avg. Grade
+                        <span className={sortField === 'averageGrade' ? 'opacity-100' : 'opacity-30'}>↑</span>
+                      </button>
+                    </th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
+                      <button
+                        onClick={() => setSortField('atRisk')}
+                        className={`flex items-center gap-1 hover:text-brand-green transition-colors ${
+                          sortField === 'atRisk' ? 'text-brand-green font-bold' : 'text-gray-700'
+                        }`}
+                      >
+                        At-Risk
+                        <span className={sortField === 'atRisk' ? 'opacity-100' : 'opacity-30'}>↑</span>
+                      </button>
+                    </th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
+                      <button
+                        onClick={() => setSortField('submissionRate')}
+                        className={`flex items-center gap-1 hover:text-brand-green transition-colors ${
+                          sortField === 'submissionRate' ? 'text-brand-green font-bold' : 'text-gray-700'
+                        }`}
+                      >
+                        Submission Rate
+                        <span className={sortField === 'submissionRate' ? 'opacity-100' : 'opacity-30'}>↑</span>
+                      </button>
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {mockCourseStats.map((course) => (
+                  {displayedCourses.map((course) => (
                     <tr key={course.courseId} className="hover:bg-gray-50 transition-colors cursor-pointer">
                       <td className="py-4 px-4">
                         <div>
@@ -336,7 +391,7 @@ export function Activity() {
                       </td>
                       <td className="py-4 px-4">
                         <span className="text-sm text-gray-900">
-                          {course.activeStudents}/{course.totalStudents}
+                          {course.totalStudents}
                         </span>
                       </td>
                       <td className="py-4 px-4">
@@ -374,6 +429,140 @@ export function Activity() {
                 </tbody>
               </table>
             </div>
+            {sortedCourses.length > 3 && (
+              !showAllCourses ? (
+                <button
+                  onClick={() => setShowAllCourses(true)}
+                  className="w-full border-t border-gray-200 bg-gray-50 hover:bg-gray-100 px-6 py-3 text-sm text-brand-green hover:text-brand-green-light font-medium transition-colors cursor-pointer"
+                >
+                  View More
+                </button>
+              ) : (
+                <button
+                  onClick={() => setShowAllCourses(false)}
+                  className="w-full border-t border-gray-200 bg-gray-50 hover:bg-gray-100 px-6 py-3 text-xs text-gray-500 hover:text-gray-700 transition-colors cursor-pointer"
+                >
+                  Show Less
+                </button>
+              )
+            )}
+          </div>
+        </div>
+
+        {/* Recent Activity Section */}
+        <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-gray-900">Recent</h2>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setActivityFilter('all')}
+                className={`px-3 py-1.5 text-sm rounded-lg transition-colors border ${
+                  activityFilter === 'all'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border-brand-green'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border-transparent'
+                }`}
+              >
+                All
+              </button>
+              <button
+                onClick={() => setActivityFilter('time_sensitive')}
+                className={`flex items-center gap-1 px-3 py-1.5 text-sm rounded-lg transition-colors border ${
+                  activityFilter === 'time_sensitive'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border-brand-green'
+                    : 'bg-orange-100 text-orange-700 hover:bg-orange-200 border-orange-300'
+                }`}
+              >
+                <Clock className="w-4 h-4 text-orange-600" />
+                Time Sensitive
+              </button>
+              <button
+                onClick={() => setActivityFilter('submission')}
+                className={`px-3 py-1.5 text-sm rounded-lg transition-colors border ${
+                  activityFilter === 'submission'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border-brand-green'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border-transparent'
+                }`}
+              >
+                Submissions
+              </button>
+              <button
+                onClick={() => setActivityFilter('access')}
+                className={`px-3 py-1.5 text-sm rounded-lg transition-colors border ${
+                  activityFilter === 'access'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border-brand-green'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border-transparent'
+                }`}
+              >
+                Access
+              </button>
+              <button
+                onClick={() => setActivityFilter('late_submission')}
+                className={`px-3 py-1.5 text-sm rounded-lg transition-colors border ${
+                  activityFilter === 'late_submission'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border-brand-green'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border-transparent'
+                }`}
+              >
+                Late
+              </button>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {filteredActivities.length === 0 ? (
+              <p className="text-gray-500 text-sm text-center py-8">No activities found for this filter.</p>
+            ) : (
+              filteredActivities.slice(0, 10).map((activity) => {
+                // Check if this is a time sensitive item (has priority field)
+                const isTimeSensitive = 'priority' in activity;
+
+                if (isTimeSensitive) {
+                  return (
+                    <div
+                      key={activity.id}
+                      className={`flex items-start gap-3 p-3 rounded-lg transition-colors ${
+                        activity.priority === 'high'
+                          ? 'bg-red-50/50 hover:bg-red-50'
+                          : 'bg-yellow-50/50 hover:bg-yellow-50'
+                      }`}
+                    >
+                      <div className="mt-0.5">
+                        <Clock className="w-4 h-4 text-orange-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-gray-900">
+                          <span className="font-medium">{activity.courseName}:</span> {activity.description}
+                        </p>
+                      </div>
+                      {activity.dueDate && (
+                        <span className="text-xs text-gray-600 whitespace-nowrap font-medium">
+                          {getTimeRemaining(activity.dueDate)}
+                        </span>
+                      )}
+                    </div>
+                  );
+                }
+
+                return (
+                  <div
+                    key={activity.id}
+                    className="flex items-start gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    <div className="mt-0.5">{getActivityIcon(activity.type)}</div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-gray-900">
+                        <span className="font-medium">{activity.studentName}</span>{' '}
+                        {activity.description}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-0.5">{activity.course}</p>
+                    </div>
+                    <span className="text-xs text-gray-500 whitespace-nowrap">
+                      {formatDistanceToNow(activity.timestamp, { addSuffix: true })}
+                    </span>
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
       </div>
