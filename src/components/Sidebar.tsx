@@ -67,11 +67,11 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
                           : 'text-gray-700 hover:bg-gray-50'
                       }`}
                     >
-                      <span>{item.label}</span>
                       <div className="flex items-center gap-2">
+                        <span>{item.label}</span>
                         {item.isExternal && <ExternalLink className="w-3 h-3" />}
-                        <Icon className="w-4 h-4" />
                       </div>
+                      <Icon className="w-4 h-4" />
                     </button>
                   </li>
                 );
