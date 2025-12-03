@@ -312,6 +312,16 @@ export const mockAttentionItems: AttentionItem[] = [
     dueDate: 'Today',
   },
   {
+    id: 'att3',
+    priority: 'medium',
+    type: 'inactive_students',
+    title: 'Inactive students',
+    description: '2 students haven\'t accessed course in 7 days',
+    courseId: '5',
+    courseName: 'Data Structures & Algorithms',
+    count: 2,
+  },
+  {
     id: 'att2',
     priority: 'high',
     type: 'upcoming_deadline',
@@ -321,16 +331,6 @@ export const mockAttentionItems: AttentionItem[] = [
     courseName: 'Data Structures & Algorithms',
     count: 3,
     dueDate: 'Tomorrow',
-  },
-  {
-    id: 'att3',
-    priority: 'medium',
-    type: 'inactive_students',
-    title: 'Inactive students',
-    description: '2 students haven\'t accessed course in 7 days',
-    courseId: '5',
-    courseName: 'Data Structures & Algorithms',
-    count: 2,
   },
   {
     id: 'att4',
