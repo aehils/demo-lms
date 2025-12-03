@@ -16,6 +16,7 @@ export function Activity() {
   const [activityFilter, setActivityFilter] = useState<ActivityFilter>('all');
   const [showAllCourses, setShowAllCourses] = useState(false);
   const [sortField, setSortField] = useState<SortField>('attendance');
+  const [attentionPage, setAttentionPage] = useState(1);
 
   // Calculate time remaining text
   const getTimeRemaining = (dueDate: string | undefined) => {
@@ -66,6 +67,15 @@ export function Activity() {
     }
     return mockActivityFeed.filter((item) => item.type === activityFilter);
   }, [activityFilter]);
+
+  // Pagination for attention items
+  const ITEMS_PER_PAGE = 5;
+  const totalAttentionPages = Math.ceil(mockAttentionItems.length / ITEMS_PER_PAGE);
+  const paginatedAttentionItems = useMemo(() => {
+    const startIndex = (attentionPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    return mockAttentionItems.slice(startIndex, endIndex);
+  }, [attentionPage]);
 
   // Calculate aggregate stats
   const aggregateStats = useMemo(() => {
@@ -251,24 +261,56 @@ export function Activity() {
             {filteredActivities.length === 0 ? (
               <p className="text-gray-500 text-sm text-center py-8">No activities found for this filter.</p>
             ) : (
-              filteredActivities.slice(0, 10).map((activity) => (
-                <div
-                  key={activity.id}
-                  className="flex items-start gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors"
-                >
-                  <div className="mt-0.5">{getActivityIcon(activity.type)}</div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-gray-900">
-                      <span className="font-medium">{activity.studentName}</span>{' '}
-                      {activity.description}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-0.5">{activity.course}</p>
+              filteredActivities.slice(0, 10).map((activity) => {
+                // Check if this is a time sensitive item (has priority field)
+                const isTimeSensitive = 'priority' in activity;
+
+                if (isTimeSensitive) {
+                  return (
+                    <div
+                      key={activity.id}
+                      className={`flex items-start gap-3 p-3 rounded-lg transition-colors ${
+                        activity.priority === 'high'
+                          ? 'bg-red-50/50 hover:bg-red-50'
+                          : 'bg-yellow-50/50 hover:bg-yellow-50'
+                      }`}
+                    >
+                      <div className="mt-0.5">
+                        <Clock className="w-4 h-4 text-orange-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-gray-900">
+                          <span className="font-medium">{activity.courseName}:</span> {activity.description}
+                        </p>
+                      </div>
+                      {activity.dueDate && (
+                        <span className="text-xs text-gray-600 whitespace-nowrap font-medium">
+                          {getTimeRemaining(activity.dueDate)}
+                        </span>
+                      )}
+                    </div>
+                  );
+                }
+
+                return (
+                  <div
+                    key={activity.id}
+                    className="flex items-start gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors"
+                  >
+                    <div className="mt-0.5">{getActivityIcon(activity.type)}</div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-gray-900">
+                        <span className="font-medium">{activity.studentName}</span>{' '}
+                        {activity.description}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-0.5">{activity.course}</p>
+                    </div>
+                    <span className="text-xs text-gray-500 whitespace-nowrap">
+                      {formatDistanceToNow(activity.timestamp, { addSuffix: true })}
+                    </span>
                   </div>
-                  <span className="text-xs text-gray-500 whitespace-nowrap">
-                    {formatDistanceToNow(activity.timestamp, { addSuffix: true })}
-                  </span>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </div>
