@@ -379,8 +379,8 @@ export function Timetable() {
               </div>
             )}
 
-            {/* Upcoming and Current Classes */}
-            {upcomingClasses.map((slot) => {
+            {/* Upcoming and Current Classes - Show max 2 by default */}
+            {upcomingClasses.slice(0, showAllClasses ? undefined : 2).map((slot) => {
               const isNow = isClassHappening(slot);
               const isNext = nextClass && slot.id === nextClass.id;
 
@@ -496,6 +496,23 @@ export function Timetable() {
                 </div>
               );
             })}
+
+            {/* Show More Button for remaining classes */}
+            {upcomingClasses.length > 2 && (
+              <button
+                onClick={() => setShowAllClasses(!showAllClasses)}
+                className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors mt-1"
+              >
+                {showAllClasses ? (
+                  <ChevronUp className="w-4 h-4" />
+                ) : (
+                  <ChevronDown className="w-4 h-4" />
+                )}
+                <span className="font-medium">
+                  {showAllClasses ? 'Show less' : `Show more (${upcomingClasses.length - 2})`}
+                </span>
+              </button>
+            )}
           </div>
         </div>
       )}
