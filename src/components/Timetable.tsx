@@ -3,6 +3,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronDown,
+  ChevronUp,
   Clock,
   MapPin,
   Users,
@@ -52,6 +53,8 @@ export function Timetable() {
     startOfWeek(getCurrentDate(), { weekStartsOn: 1 }) // Start week on Monday
   );
 
+  const [showPastClasses, setShowPastClasses] = useState(false);
+
   const isCurrentWeek = useMemo(() => {
     const today = getCurrentDate();
     const todayWeekStart = startOfWeek(today, { weekStartsOn: 1 });
@@ -93,6 +96,23 @@ export function Timetable() {
       .filter(slot => slot.dayOfWeek === adjustedDayOfWeek)
       .sort((a, b) => a.startTime.localeCompare(b.startTime));
   }, []);
+
+  // Split into past and upcoming/current classes
+  const { pastClasses, upcomingClasses } = useMemo(() => {
+    const currentTime = getCurrentTime();
+    const past: TimeSlot[] = [];
+    const upcoming: TimeSlot[] = [];
+
+    todaysClasses.forEach(slot => {
+      if (slot.endTime <= currentTime) {
+        past.push(slot);
+      } else {
+        upcoming.push(slot);
+      }
+    });
+
+    return { pastClasses: past, upcomingClasses: upcoming };
+  }, [todaysClasses]);
 
   // Find next class
   const nextClass = useMemo(() => {
@@ -241,9 +261,123 @@ export function Timetable() {
           </div>
 
           <div className="space-y-3">
-            {todaysClasses.map((slot) => {
+            {/* Collapsible Past Classes */}
+            {pastClasses.length > 0 && (
+              <div>
+                <button
+                  onClick={() => setShowPastClasses(!showPastClasses)}
+                  className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors mb-2"
+                >
+                  {showPastClasses ? (
+                    <ChevronUp className="w-4 h-4" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4" />
+                  )}
+                  <span className="font-medium">
+                    {showPastClasses ? 'Hide' : 'Show'} previous ({pastClasses.length})
+                  </span>
+                </button>
+
+                {showPastClasses && (
+                  <div className="space-y-3 mb-3">
+                    {pastClasses.map((slot) => {
+                      const isPast = true;
+
+                      return (
+                        <div
+                          key={slot.id}
+                          className="rounded-lg p-4 transition-all bg-gradient-to-r from-brand-green/10 to-brand-green-light/10 border border-brand-green/20 opacity-60"
+                        >
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-2">
+                                <span className="px-2 py-0.5 bg-gray-400 text-white text-xs font-bold rounded-full">
+                                  COMPLETED
+                                </span>
+                                <span className="text-lg font-bold text-gray-900">
+                                  {slot.courseCode}
+                                </span>
+                                {slot.yearGroup && (
+                                  <span className="text-xs px-2 py-0.5 rounded-full bg-white/50 text-gray-700">
+                                    {slot.yearGroup}
+                                  </span>
+                                )}
+                              </div>
+
+                              <div className="text-sm mb-2 text-gray-700">
+                                {slot.courseName}
+                              </div>
+
+                              <div className="flex items-center gap-4 text-sm text-gray-600">
+                                <div className="flex items-center gap-1">
+                                  <Clock className="w-4 h-4" />
+                                  <span>{formatTime(slot.startTime)} - {formatTime(slot.endTime)}</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <MapPin className="w-4 h-4" />
+                                  <span>Room {slot.room}</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Users className="w-4 h-4" />
+                                  <span>{slot.students} students</span>
+                                </div>
+                              </div>
+
+                              {/* Prep Status Indicators */}
+                              <div className="flex items-center gap-2 mt-2">
+                                {slot.materialsUploaded ? (
+                                  <div className="flex items-center gap-1 text-xs text-gray-600">
+                                    <CheckCircle2 className="w-3 h-3" />
+                                    <span>Materials ready</span>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-1 text-xs text-gray-600">
+                                    <Zap className="w-3 h-3" />
+                                    <span>No materials</span>
+                                  </div>
+                                )}
+                                {slot.hasUpcomingAssignment && (
+                                  <div className="flex items-center gap-1 text-xs text-gray-600">
+                                    <AlertTriangle className="w-3 h-3" />
+                                    <span>Assignment due</span>
+                                  </div>
+                                )}
+                                {slot.newQuestions > 0 && (
+                                  <div className="flex items-center gap-1 text-xs text-gray-600">
+                                    <MessageSquare className="w-3 h-3" />
+                                    <span>{slot.newQuestions} new questions</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Quick Actions */}
+                            <div className="flex flex-col gap-2 ml-4">
+                              {slot.type !== 'office_hours' && (
+                                <>
+                                  <button className="px-3 py-1.5 text-xs font-medium rounded transition-colors flex items-center gap-1 bg-white text-brand-green border border-brand-green hover:bg-gray-50">
+                                    <ClipboardCheck className="w-3 h-3" />
+                                    Take Attendance
+                                  </button>
+                                  <button className="px-3 py-1.5 text-xs font-medium rounded transition-colors flex items-center gap-1 bg-white text-brand-green border border-brand-green hover:bg-gray-50">
+                                    <Eye className="w-3 h-3" />
+                                    View Class
+                                  </button>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Upcoming and Current Classes */}
+            {upcomingClasses.map((slot) => {
               const isNow = isClassHappening(slot);
-              const isPast = isPastClass(slot);
               const isNext = nextClass && slot.id === nextClass.id;
 
               return (
@@ -253,7 +387,7 @@ export function Timetable() {
                     isNext
                       ? 'bg-white shadow-xl ring-2 ring-brand-green border-2 border-brand-green'
                       : 'bg-gradient-to-r from-brand-green/10 to-brand-green-light/10 border border-brand-green/20'
-                  } ${isPast ? 'opacity-60' : ''}`}
+                  }`}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -266,11 +400,6 @@ export function Timetable() {
                         {isNow && (
                           <span className="px-2 py-0.5 bg-red-500 text-white text-xs font-bold rounded-full animate-pulse">
                             LIVE NOW
-                          </span>
-                        )}
-                        {isPast && (
-                          <span className="px-2 py-0.5 bg-gray-400 text-white text-xs font-bold rounded-full">
-                            COMPLETED
                           </span>
                         )}
                         <span className={`text-lg font-bold ${isNext ? slot.color.replace('bg-', 'text-') : 'text-gray-900'}`}>
