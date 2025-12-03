@@ -234,7 +234,7 @@ export function Activity() {
                       </td>
                       <td className="py-4 px-4">
                         <span className="text-sm text-gray-900">
-                          {course.activeStudents}/{course.totalStudents}
+                          {course.totalStudents}
                         </span>
                       </td>
                       <td className="py-4 px-4">
