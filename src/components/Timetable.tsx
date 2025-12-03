@@ -178,94 +178,87 @@ export function Timetable() {
 
   return (
     <div className="p-8">
-      {/* Week Navigation on left, Title on right */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          {!isCurrentWeek && (
-            <button
-              onClick={goToToday}
-              className="px-4 py-2 bg-brand-green text-white rounded-lg hover:bg-brand-green-dark transition-colors flex items-center gap-2"
-            >
-              <Calendar className="w-4 h-4" />
-              Today
-            </button>
-          )}
-
-          <button
-            onClick={goToPreviousWeek}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200 bg-white"
-            aria-label="Previous week"
-          >
-            <ChevronLeft className="w-5 h-5 text-gray-700" />
-          </button>
-
-          {/* Clickable Week Selector with Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all flex items-center gap-2 group">
-                <span className="font-semibold text-gray-900">
-                  Week of {format(currentWeekStart, 'MMM d')} - {format(addDays(currentWeekStart, 4), 'MMM d, yyyy')}
-                </span>
-                <ChevronDown className="w-4 h-4 text-gray-500 group-hover:text-gray-700 transition-colors" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="start"
-              className="bg-white border-gray-200 shadow-lg"
-              style={{ width: 'var(--radix-dropdown-menu-trigger-width)' }}
-            >
-              <DropdownMenuLabel>Fall 2024 Semester</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <div className="max-h-[300px] overflow-y-auto">
-                {semesterWeeks.map((week) => {
-                  const isSelected = isSameDay(week.startDate, currentWeekStart);
-                  const isCurrent = isSameDay(week.startDate, startOfWeek(getCurrentDate(), { weekStartsOn: 1 }));
-
-                  return (
-                    <DropdownMenuItem
-                      key={week.weekNumber}
-                      onClick={() => selectWeek(week.startDate)}
-                      className={`${isSelected ? 'bg-brand-green text-white hover:bg-brand-green-dark' : 'hover:bg-gray-100'}`}
-                    >
-                      <div className="flex items-center justify-between w-full">
-                        <span className="font-medium">Week {week.weekNumber}</span>
-                        <span className="text-xs opacity-80">
-                          {format(week.startDate, 'MMM d')} - {format(week.endDate, 'MMM d')}
-                        </span>
-                      </div>
-                      {isCurrent && !isSelected && (
-                        <span className="ml-2 text-xs text-brand-green font-semibold">Today</span>
-                      )}
-                    </DropdownMenuItem>
-                  );
-                })}
-              </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <button
-            onClick={goToNextWeek}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200 bg-white"
-            aria-label="Next week"
-          >
-            <ChevronRight className="w-5 h-5 text-gray-700" />
-          </button>
-        </div>
-
-        <h1 className="text-4xl font-bold text-gray-900 mr-8">Timetable</h1>
+      {/* Title */}
+      <div className="mb-6">
+        <h1 className="text-4xl font-bold text-gray-900">Timetable</h1>
       </div>
 
       {/* Today's Classes Section - Only show if viewing current week */}
       {isCurrentWeek && todaysClasses.length > 0 && (
         <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-brand-green rounded-lg">
-              <div className="w-2.5 h-2.5 bg-white rounded-full animate-pulse" />
-              <span className="text-sm font-bold text-white">Today</span>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-brand-green rounded-lg">
+                <div className="w-2.5 h-2.5 bg-white rounded-full animate-pulse" />
+                <span className="text-sm font-bold text-white">Today</span>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900">
+                {format(getCurrentDate(), 'EEEE d MMMM, yyyy')}
+              </h2>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900">
-              {format(getCurrentDate(), 'EEEE d MMMM, yyyy')}
-            </h2>
+
+            {/* Week Navigation */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={goToPreviousWeek}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200 bg-white"
+                aria-label="Previous week"
+              >
+                <ChevronLeft className="w-5 h-5 text-gray-700" />
+              </button>
+
+              {/* Clickable Week Selector with Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all flex items-center gap-2 group">
+                    <span className="font-semibold text-gray-900">
+                      Week of {format(currentWeekStart, 'MMM d')} - {format(addDays(currentWeekStart, 4), 'MMM d, yyyy')}
+                    </span>
+                    <ChevronDown className="w-4 h-4 text-gray-500 group-hover:text-gray-700 transition-colors" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="bg-white border-gray-200 shadow-lg"
+                  style={{ width: 'var(--radix-dropdown-menu-trigger-width)' }}
+                >
+                  <DropdownMenuLabel>Fall 2024 Semester</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <div className="max-h-[300px] overflow-y-auto">
+                    {semesterWeeks.map((week) => {
+                      const isSelected = isSameDay(week.startDate, currentWeekStart);
+                      const isCurrent = isSameDay(week.startDate, startOfWeek(getCurrentDate(), { weekStartsOn: 1 }));
+
+                      return (
+                        <DropdownMenuItem
+                          key={week.weekNumber}
+                          onClick={() => selectWeek(week.startDate)}
+                          className={`${isSelected ? 'bg-brand-green text-white hover:bg-brand-green-dark' : 'hover:bg-gray-100'}`}
+                        >
+                          <div className="flex items-center justify-between w-full">
+                            <span className="font-medium">Week {week.weekNumber}</span>
+                            <span className="text-xs opacity-80">
+                              {format(week.startDate, 'MMM d')} - {format(week.endDate, 'MMM d')}
+                            </span>
+                          </div>
+                          {isCurrent && !isSelected && (
+                            <span className="ml-2 text-xs text-brand-green font-semibold">Today</span>
+                          )}
+                        </DropdownMenuItem>
+                      );
+                    })}
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <button
+                onClick={goToNextWeek}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200 bg-white"
+                aria-label="Next week"
+              >
+                <ChevronRight className="w-5 h-5 text-gray-700" />
+              </button>
+            </div>
           </div>
 
           <div className="space-y-3">
@@ -518,6 +511,79 @@ export function Timetable() {
               </button>
             )}
           </div>
+        </div>
+      )}
+
+      {/* Week Navigation for non-current weeks */}
+      {!isCurrentWeek && (
+        <div className="mb-6 flex items-center justify-end gap-2">
+          <button
+            onClick={goToToday}
+            className="px-4 py-2 bg-brand-green text-white rounded-lg hover:bg-brand-green-dark transition-colors flex items-center gap-2"
+          >
+            <Calendar className="w-4 h-4" />
+            Today
+          </button>
+
+          <button
+            onClick={goToPreviousWeek}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200 bg-white"
+            aria-label="Previous week"
+          >
+            <ChevronLeft className="w-5 h-5 text-gray-700" />
+          </button>
+
+          {/* Clickable Week Selector with Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-all flex items-center gap-2 group">
+                <span className="font-semibold text-gray-900">
+                  Week of {format(currentWeekStart, 'MMM d')} - {format(addDays(currentWeekStart, 4), 'MMM d, yyyy')}
+                </span>
+                <ChevronDown className="w-4 h-4 text-gray-500 group-hover:text-gray-700 transition-colors" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="bg-white border-gray-200 shadow-lg"
+              style={{ width: 'var(--radix-dropdown-menu-trigger-width)' }}
+            >
+              <DropdownMenuLabel>Fall 2024 Semester</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <div className="max-h-[300px] overflow-y-auto">
+                {semesterWeeks.map((week) => {
+                  const isSelected = isSameDay(week.startDate, currentWeekStart);
+                  const isCurrent = isSameDay(week.startDate, startOfWeek(getCurrentDate(), { weekStartsOn: 1 }));
+
+                  return (
+                    <DropdownMenuItem
+                      key={week.weekNumber}
+                      onClick={() => selectWeek(week.startDate)}
+                      className={`${isSelected ? 'bg-brand-green text-white hover:bg-brand-green-dark' : 'hover:bg-gray-100'}`}
+                    >
+                      <div className="flex items-center justify-between w-full">
+                        <span className="font-medium">Week {week.weekNumber}</span>
+                        <span className="text-xs opacity-80">
+                          {format(week.startDate, 'MMM d')} - {format(week.endDate, 'MMM d')}
+                        </span>
+                      </div>
+                      {isCurrent && !isSelected && (
+                        <span className="ml-2 text-xs text-brand-green font-semibold">Today</span>
+                      )}
+                    </DropdownMenuItem>
+                  );
+                })}
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <button
+            onClick={goToNextWeek}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200 bg-white"
+            aria-label="Next week"
+          >
+            <ChevronRight className="w-5 h-5 text-gray-700" />
+          </button>
         </div>
       )}
 
