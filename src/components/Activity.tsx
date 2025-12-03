@@ -45,9 +45,12 @@ export function Activity() {
 
   // Filter activity feed based on selected filter
   const filteredActivities = useMemo(() => {
-    if (activityFilter === 'all') return mockActivityFeed;
+    if (activityFilter === 'all') {
+      // Combine regular activities and time sensitive items for "All" filter
+      return [...mockAttentionItems, ...mockActivityFeed];
+    }
     if (activityFilter === 'time_sensitive') {
-      // Return attention items when time_sensitive filter is selected
+      // Return only attention items when time_sensitive filter is selected
       return mockAttentionItems;
     }
     if (activityFilter === 'comment') {
@@ -301,10 +304,10 @@ export function Activity() {
                 className={`flex items-center gap-1 px-3 py-1.5 text-sm rounded-lg transition-colors ${
                   activityFilter === 'time_sensitive'
                     ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    : 'bg-orange-100 text-orange-700 hover:bg-orange-200 border border-orange-300'
                 }`}
               >
-                <Clock className="w-4 h-4" />
+                <Clock className="w-4 h-4 text-orange-600" />
                 Time Sensitive
               </button>
               <button
@@ -352,20 +355,24 @@ export function Activity() {
                   return (
                     <div
                       key={activity.id}
-                      className={`flex items-start justify-between gap-4 p-4 rounded-lg border ${
+                      className={`flex items-start gap-3 p-3 rounded-lg transition-colors border-l-4 ${
                         activity.priority === 'high'
-                          ? 'bg-red-50 border-red-200'
-                          : 'bg-yellow-50 border-yellow-200'
+                          ? 'bg-red-50/50 border-l-red-500 hover:bg-red-50'
+                          : 'bg-yellow-50/50 border-l-yellow-500 hover:bg-yellow-50'
                       }`}
                     >
+                      <div className="mt-0.5">
+                        <Clock className="w-4 h-4 text-orange-600" />
+                      </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-medium text-gray-900">{activity.courseName}</h3>
-                        <p className="text-sm text-gray-700 mt-1">{activity.description}</p>
+                        <p className="text-sm text-gray-900">
+                          <span className="font-medium">{activity.courseName}:</span> {activity.description}
+                        </p>
                       </div>
                       {activity.dueDate && (
-                        <div className="text-sm text-gray-600 whitespace-nowrap font-medium">
+                        <span className="text-xs text-gray-600 whitespace-nowrap font-medium">
                           {getTimeRemaining(activity.dueDate)}
-                        </div>
+                        </span>
                       )}
                     </div>
                   );
