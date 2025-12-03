@@ -170,45 +170,49 @@ export function Activity() {
                 <thead className="bg-gray-50 border-b border-gray-200">
                   <tr>
                     <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">My Classes</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Headcount</th>
                     <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
                       <button
                         onClick={() => setSortField('attendance')}
-                        className={`hover:text-brand-green transition-colors ${
-                          sortField === 'attendance' ? 'text-brand-green' : ''
+                        className={`flex items-center gap-1 hover:text-brand-green transition-colors ${
+                          sortField === 'attendance' ? 'text-brand-green font-bold' : 'text-gray-700'
                         }`}
                       >
-                        Attendance {sortField === 'attendance' && '↑'}
+                        Attendance
+                        <span className={sortField === 'attendance' ? 'opacity-100' : 'opacity-30'}>↑</span>
                       </button>
                     </th>
                     <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
                       <button
                         onClick={() => setSortField('averageGrade')}
-                        className={`hover:text-brand-green transition-colors ${
-                          sortField === 'averageGrade' ? 'text-brand-green' : ''
+                        className={`flex items-center gap-1 hover:text-brand-green transition-colors ${
+                          sortField === 'averageGrade' ? 'text-brand-green font-bold' : 'text-gray-700'
                         }`}
                       >
-                        Avg. Grade {sortField === 'averageGrade' && '↑'}
+                        Avg. Grade
+                        <span className={sortField === 'averageGrade' ? 'opacity-100' : 'opacity-30'}>↑</span>
                       </button>
                     </th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Headcount</th>
                     <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
                       <button
                         onClick={() => setSortField('atRisk')}
-                        className={`hover:text-brand-green transition-colors ${
-                          sortField === 'atRisk' ? 'text-brand-green' : ''
+                        className={`flex items-center gap-1 hover:text-brand-green transition-colors ${
+                          sortField === 'atRisk' ? 'text-brand-green font-bold' : 'text-gray-700'
                         }`}
                       >
-                        At-Risk {sortField === 'atRisk' && '↑'}
+                        At-Risk
+                        <span className={sortField === 'atRisk' ? 'opacity-100' : 'opacity-30'}>↑</span>
                       </button>
                     </th>
                     <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
                       <button
                         onClick={() => setSortField('submissionRate')}
-                        className={`hover:text-brand-green transition-colors ${
-                          sortField === 'submissionRate' ? 'text-brand-green' : ''
+                        className={`flex items-center gap-1 hover:text-brand-green transition-colors ${
+                          sortField === 'submissionRate' ? 'text-brand-green font-bold' : 'text-gray-700'
                         }`}
                       >
-                        Submission Rate {sortField === 'submissionRate' && '↑'}
+                        Submission Rate
+                        <span className={sortField === 'submissionRate' ? 'opacity-100' : 'opacity-30'}>↑</span>
                       </button>
                     </th>
                   </tr>
@@ -223,15 +227,15 @@ export function Activity() {
                         </div>
                       </td>
                       <td className="py-4 px-4">
+                        <span className="text-sm text-gray-900">
+                          {course.activeStudents}/{course.totalStudents}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4">
                         <span className="text-sm text-gray-900">{course.attendance}%</span>
                       </td>
                       <td className="py-4 px-4">
                         <span className="text-sm text-gray-900">{course.averageGrade}%</span>
-                      </td>
-                      <td className="py-4 px-4">
-                        <span className="text-sm text-gray-900">
-                          {course.activeStudents}/{course.totalStudents}
-                        </span>
                       </td>
                       <td className="py-4 px-4">
                         <span className="text-sm font-medium text-orange-600">
