@@ -61,7 +61,7 @@ export function Sidebar({ currentView, onViewChange }: SidebarProps) {
                   <li key={item.id}>
                     <button
                       onClick={() => onViewChange(item.id)}
-                      className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors text-sm ${
+                      className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-sm ${
                         isActive
                           ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green/30'
                           : 'text-gray-700 hover:bg-gray-50'
