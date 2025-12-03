@@ -291,20 +291,20 @@ export function Activity() {
             <div className="flex gap-2">
               <button
                 onClick={() => setActivityFilter('all')}
-                className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                className={`px-3 py-1.5 text-sm rounded-lg transition-colors border ${
                   activityFilter === 'all'
-                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border-brand-green'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border-transparent'
                 }`}
               >
                 All
               </button>
               <button
                 onClick={() => setActivityFilter('time_sensitive')}
-                className={`flex items-center gap-1 px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                className={`flex items-center gap-1 px-3 py-1.5 text-sm rounded-lg transition-colors border ${
                   activityFilter === 'time_sensitive'
-                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green'
-                    : 'bg-orange-100 text-orange-700 hover:bg-orange-200 border border-orange-300'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border-brand-green'
+                    : 'bg-orange-100 text-orange-700 hover:bg-orange-200 border-orange-300'
                 }`}
               >
                 <Clock className="w-4 h-4 text-orange-600" />
@@ -312,30 +312,30 @@ export function Activity() {
               </button>
               <button
                 onClick={() => setActivityFilter('submission')}
-                className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                className={`px-3 py-1.5 text-sm rounded-lg transition-colors border ${
                   activityFilter === 'submission'
-                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border-brand-green'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border-transparent'
                 }`}
               >
                 Submissions
               </button>
               <button
                 onClick={() => setActivityFilter('access')}
-                className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                className={`px-3 py-1.5 text-sm rounded-lg transition-colors border ${
                   activityFilter === 'access'
-                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border-brand-green'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border-transparent'
                 }`}
               >
                 Access
               </button>
               <button
                 onClick={() => setActivityFilter('late_submission')}
-                className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                className={`px-3 py-1.5 text-sm rounded-lg transition-colors border ${
                   activityFilter === 'late_submission'
-                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border-brand-green'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border-transparent'
                 }`}
               >
                 Late
@@ -355,10 +355,10 @@ export function Activity() {
                   return (
                     <div
                       key={activity.id}
-                      className={`flex items-start gap-3 p-3 rounded-lg transition-colors border-l-4 ${
+                      className={`flex items-start gap-3 p-3 rounded-lg transition-colors ${
                         activity.priority === 'high'
-                          ? 'bg-red-50/50 border-l-red-500 hover:bg-red-50'
-                          : 'bg-yellow-50/50 border-l-yellow-500 hover:bg-yellow-50'
+                          ? 'bg-red-50/50 hover:bg-red-50'
+                          : 'bg-yellow-50/50 hover:bg-yellow-50'
                       }`}
                     >
                       <div className="mt-0.5">
