@@ -54,6 +54,7 @@ export function Timetable() {
   );
 
   const [showPastClasses, setShowPastClasses] = useState(false);
+  const [showAllClasses, setShowAllClasses] = useState(false);
 
   const isCurrentWeek = useMemo(() => {
     const today = getCurrentDate();
