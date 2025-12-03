@@ -10,10 +10,14 @@ import {
 
 type ActivityFilter = 'all' | 'submission' | 'late_submission' | 'access' | 'comment';
 
+type SortField = 'attendance' | 'averageGrade' | 'atRisk' | 'submissionRate';
+
 export function Activity() {
   const [activityFilter, setActivityFilter] = useState<ActivityFilter>('all');
   const [attentionPage, setAttentionPage] = useState(1);
   const itemsPerPage = 4;
+  const [showAllCourses, setShowAllCourses] = useState(false);
+  const [sortField, setSortField] = useState<SortField>('attendance');
 
   // Pagination for attention items
   const totalAttentionPages = Math.ceil(mockAttentionItems.length / itemsPerPage);
@@ -72,6 +76,13 @@ export function Activity() {
     return { totalStudents, avgAttendance, avgGrade, atRiskCount };
   }, []);
 
+  // Sort and filter courses
+  const sortedCourses = useMemo(() => {
+    return [...mockCourseStats].sort((a, b) => a[sortField] - b[sortField]);
+  }, [sortField]);
+
+  const displayedCourses = showAllCourses ? sortedCourses : sortedCourses.slice(0, 3);
+
   // Get icon for activity type
   const getActivityIcon = (type: ActivityType) => {
     switch (type) {
@@ -97,6 +108,171 @@ export function Activity() {
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Activity Dashboard</h1>
           <p className="text-gray-600 mt-1">Monitor student activity and course performance</p>
+        </div>
+
+        {/* Course Overview Section */}
+        <div className="space-y-6">
+          {/* Aggregate Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <Users className="w-5 h-5 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{aggregateStats.totalStudents}</p>
+                  <p className="text-sm text-gray-600">Total Students</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{aggregateStats.avgAttendance}%</p>
+                  <p className="text-sm text-gray-600">Avg Attendance</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-purple-100 rounded-lg">
+                  <TrendingUp className="w-5 h-5 text-purple-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{aggregateStats.avgGrade}%</p>
+                  <p className="text-sm text-gray-600">Avg Grade</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-orange-100 rounded-lg">
+                  <AlertTriangle className="w-5 h-5 text-orange-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{aggregateStats.atRiskCount}</p>
+                  <p className="text-sm text-gray-600">At-Risk Students</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Course Table */}
+          <div className="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">My Classes</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
+                      <button
+                        onClick={() => setSortField('attendance')}
+                        className={`hover:text-brand-green transition-colors ${
+                          sortField === 'attendance' ? 'text-brand-green' : ''
+                        }`}
+                      >
+                        Attendance {sortField === 'attendance' && '↑'}
+                      </button>
+                    </th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
+                      <button
+                        onClick={() => setSortField('averageGrade')}
+                        className={`hover:text-brand-green transition-colors ${
+                          sortField === 'averageGrade' ? 'text-brand-green' : ''
+                        }`}
+                      >
+                        Avg. Grade {sortField === 'averageGrade' && '↑'}
+                      </button>
+                    </th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Headcount</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
+                      <button
+                        onClick={() => setSortField('atRisk')}
+                        className={`hover:text-brand-green transition-colors ${
+                          sortField === 'atRisk' ? 'text-brand-green' : ''
+                        }`}
+                      >
+                        At-Risk {sortField === 'atRisk' && '↑'}
+                      </button>
+                    </th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">
+                      <button
+                        onClick={() => setSortField('submissionRate')}
+                        className={`hover:text-brand-green transition-colors ${
+                          sortField === 'submissionRate' ? 'text-brand-green' : ''
+                        }`}
+                      >
+                        Submission Rate {sortField === 'submissionRate' && '↑'}
+                      </button>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {displayedCourses.map((course) => (
+                    <tr key={course.courseId} className="hover:bg-gray-50 transition-colors cursor-pointer">
+                      <td className="py-4 px-4">
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">{course.courseName}</p>
+                          <p className="text-xs text-gray-500">{course.courseCode}</p>
+                        </div>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className="text-sm text-gray-900">{course.attendance}%</span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className="text-sm text-gray-900">{course.averageGrade}%</span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className="text-sm text-gray-900">
+                          {course.activeStudents}/{course.totalStudents}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className="text-sm font-medium text-orange-600">
+                          {course.atRisk}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-[100px]">
+                            <div
+                              className={`h-2 rounded-full ${
+                                course.submissionRate >= 85
+                                  ? 'bg-green-500'
+                                  : course.submissionRate >= 70
+                                  ? 'bg-yellow-500'
+                                  : 'bg-red-500'
+                              }`}
+                              style={{ width: `${course.submissionRate}%` }}
+                            />
+                          </div>
+                          <span className="text-sm text-gray-600 whitespace-nowrap">
+                            {course.submissionRate}%
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {!showAllCourses && sortedCourses.length > 3 && (
+              <div className="border-t border-gray-200 bg-gray-50 px-6 py-3 flex justify-center">
+                <button
+                  onClick={() => setShowAllCourses(true)}
+                  className="px-4 py-2 text-sm text-brand-green hover:text-brand-green-light font-medium"
+                >
+                  View More
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Quick Actions */}
@@ -260,127 +436,6 @@ export function Activity() {
               Show more
             </button>
           )}
-        </div>
-
-        {/* Course Overview Section */}
-        <div className="space-y-6">
-          <h2 className="text-xl font-semibold text-gray-900">Course Overview</h2>
-
-          {/* Aggregate Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Users className="w-5 h-5 text-blue-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-gray-900">{aggregateStats.totalStudents}</p>
-                  <p className="text-sm text-gray-600">Total Students</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <CheckCircle className="w-5 h-5 text-green-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-gray-900">{aggregateStats.avgAttendance}%</p>
-                  <p className="text-sm text-gray-600">Avg Attendance</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <TrendingUp className="w-5 h-5 text-purple-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-gray-900">{aggregateStats.avgGrade}%</p>
-                  <p className="text-sm text-gray-600">Avg Grade</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg shadow border border-gray-200 p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <AlertTriangle className="w-5 h-5 text-orange-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-gray-900">{aggregateStats.atRiskCount}</p>
-                  <p className="text-sm text-gray-600">At-Risk Students</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Course Table */}
-          <div className="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-200">
-                  <tr>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Course</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Students</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Attendance</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Avg. Grade</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">At-Risk</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Submission Rate</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {mockCourseStats.map((course) => (
-                    <tr key={course.courseId} className="hover:bg-gray-50 transition-colors cursor-pointer">
-                      <td className="py-4 px-4">
-                        <div>
-                          <p className="text-sm font-medium text-gray-900">{course.courseName}</p>
-                          <p className="text-xs text-gray-500">{course.courseCode}</p>
-                        </div>
-                      </td>
-                      <td className="py-4 px-4">
-                        <span className="text-sm text-gray-900">
-                          {course.activeStudents}/{course.totalStudents}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4">
-                        <span className="text-sm text-gray-900">{course.attendance}%</span>
-                      </td>
-                      <td className="py-4 px-4">
-                        <span className="text-sm text-gray-900">{course.averageGrade}%</span>
-                      </td>
-                      <td className="py-4 px-4">
-                        <span className="text-sm font-medium text-orange-600">
-                          {course.atRisk}
-                        </span>
-                      </td>
-                      <td className="py-4 px-4">
-                        <div className="flex items-center gap-2">
-                          <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-[100px]">
-                            <div
-                              className={`h-2 rounded-full ${
-                                course.submissionRate >= 85
-                                  ? 'bg-green-500'
-                                  : course.submissionRate >= 70
-                                  ? 'bg-yellow-500'
-                                  : 'bg-red-500'
-                              }`}
-                              style={{ width: `${course.submissionRate}%` }}
-                            />
-                          </div>
-                          <span className="text-sm text-gray-600 whitespace-nowrap">
-                            {course.submissionRate}%
-                          </span>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
         </div>
       </div>
     </div>
