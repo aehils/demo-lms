@@ -225,7 +225,7 @@ export function Timetable() {
                     <DropdownMenuItem
                       key={week.weekNumber}
                       onClick={() => selectWeek(week.startDate)}
-                      className={`${isSelected ? 'bg-brand-green text-white hover:bg-brand-green-dark' : ''}`}
+                      className={`${isSelected ? 'bg-brand-green text-white hover:bg-brand-green-dark' : 'hover:bg-gray-100'}`}
                     >
                       <div className="flex items-center justify-between w-full">
                         <span className="font-medium">Week {week.weekNumber}</span>
