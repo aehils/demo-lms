@@ -116,6 +116,163 @@ export function Activity() {
           <p className="text-gray-600 mt-1">Monitor student activity and course performance</p>
         </div>
 
+        {/* Quick Actions */}
+        <div className="flex justify-end gap-3">
+          <button className="flex items-center gap-2 px-4 py-2 bg-brand-green hover:bg-brand-green-light text-white rounded-lg transition-colors shadow-sm">
+            <ClipboardCheck className="w-4 h-4" />
+            <span className="text-sm font-medium">View Submissions</span>
+          </button>
+          <button className="flex items-center gap-2 px-4 py-2 bg-brand-green hover:bg-brand-green-light text-white rounded-lg transition-colors shadow-sm">
+            <Megaphone className="w-4 h-4" />
+            <span className="text-sm font-medium">Post Announcement</span>
+          </button>
+        </div>
+
+        {/* Time Sensitive Section */}
+        <div className="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
+          <div className="p-6 pb-4">
+            <div className="flex items-center gap-2 mb-4">
+              <Clock className="w-5 h-5 text-orange-600" />
+              <h2 className="text-xl font-semibold text-gray-900">Time Sensitive</h2>
+            </div>
+            {mockAttentionItems.length === 0 ? (
+              <div className="py-8">
+                <p className="text-gray-500 text-sm text-center">No items.</p>
+              </div>
+            ) : (
+              <div className="space-y-3 min-h-[280px]">
+                {paginatedAttentionItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className={`flex items-start justify-between gap-4 p-4 rounded-lg border ${
+                      item.priority === 'high'
+                        ? 'bg-red-50 border-red-200'
+                        : 'bg-yellow-50 border-yellow-200'
+                    }`}
+                  >
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-medium text-gray-900">{item.courseName}</h3>
+                      <p className="text-sm text-gray-700 mt-1">{item.description}</p>
+                    </div>
+                    {item.dueDate && (
+                      <div className="text-sm text-gray-600 whitespace-nowrap font-medium">
+                        {getTimeRemaining(item.dueDate)}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Pagination Footer */}
+          {mockAttentionItems.length > 0 && (
+            <div className="border-t border-gray-200 bg-gray-50 px-6 py-3 flex items-center justify-between">
+              <div className="text-sm text-gray-600">
+                Showing page {attentionPage} of {totalAttentionPages}
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setAttentionPage((p) => Math.max(1, p - 1))}
+                  disabled={attentionPage === 1}
+                  className={`px-3 py-1 text-sm rounded border ${
+                    attentionPage === 1
+                      ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                  }`}
+                >
+                  Previous
+                </button>
+                <button
+                  onClick={() => setAttentionPage((p) => Math.min(totalAttentionPages, p + 1))}
+                  disabled={attentionPage === totalAttentionPages}
+                  className={`px-3 py-1 text-sm rounded border ${
+                    attentionPage === totalAttentionPages
+                      ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                  }`}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Recent Activity Section */}
+        <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-gray-900">Recent</h2>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setActivityFilter('all')}
+                className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                  activityFilter === 'all'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                All
+              </button>
+              <button
+                onClick={() => setActivityFilter('submission')}
+                className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                  activityFilter === 'submission'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                Submissions
+              </button>
+              <button
+                onClick={() => setActivityFilter('access')}
+                className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                  activityFilter === 'access'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                Access
+              </button>
+              <button
+                onClick={() => setActivityFilter('late_submission')}
+                className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${
+                  activityFilter === 'late_submission'
+                    ? 'bg-brand-green/10 text-brand-green-dark font-medium border border-brand-green'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                Late
+              </button>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {filteredActivities.length === 0 ? (
+              <p className="text-gray-500 text-sm text-center py-8">No activities found for this filter.</p>
+            ) : (
+              filteredActivities.slice(0, 10).map((activity) => (
+                <div
+                  key={activity.id}
+                  className="flex items-start gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors"
+                >
+                  <div className="mt-0.5">{getActivityIcon(activity.type)}</div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-gray-900">
+                      <span className="font-medium">{activity.studentName}</span>{' '}
+                      {activity.description}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-0.5">{activity.course}</p>
+                  </div>
+                  <span className="text-xs text-gray-500 whitespace-nowrap">
+                    {formatDistanceToNow(activity.timestamp, { addSuffix: true })}
+                  </span>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
         {/* Course Overview Section */}
         <div className="space-y-6">
           {/* Aggregate Stats Cards */}
