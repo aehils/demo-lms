@@ -62,10 +62,6 @@ export function Timetable() {
     return isSameDay(currentWeekStart, todayWeekStart);
   }, [currentWeekStart]);
 
-  const currentWeekNumber = useMemo(() => {
-    const week = semesterWeeks.find(w => isSameDay(w.startDate, currentWeekStart));
-    return week?.weekNumber;
-  }, [currentWeekStart, semesterWeeks]);
 
   const weekDays = useMemo(() => {
     return Array.from({ length: 5 }, (_, i) => addDays(currentWeekStart, i));
@@ -169,11 +165,6 @@ export function Timetable() {
   const isClassHappening = (slot: TimeSlot) => {
     const currentTime = getCurrentTime();
     return currentTime >= slot.startTime && currentTime < slot.endTime;
-  };
-
-  const isPastClass = (slot: TimeSlot) => {
-    const currentTime = getCurrentTime();
-    return currentTime >= slot.endTime;
   };
 
   return (
@@ -282,8 +273,6 @@ export function Timetable() {
                 {showPastClasses && (
                   <div className="space-y-3 mb-3">
                     {pastClasses.map((slot) => {
-                      const isPast = true;
-
                       return (
                         <div
                           key={slot.id}
